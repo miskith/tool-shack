@@ -1,17 +1,17 @@
 {
-  "name": "utensils",
+  "name": "tool-shack",
   "version": "0.0.1",
   "description": "Collection of usefull functions to ease work",
   "main": "src",
   "author": "David Myška",
   "license": "MIT",
 	"bugs": {
-		"url": "https://www.davidmyska.com/utensils/issues"
+		"url": "https://www.davidmyska.com/tool-shack/issues"
 	},
-	"homepage": "https://www.davidmyska.com/utensils#readme",
+	"homepage": "https://www.davidmyska.com/tool-shack#readme",
 	"repository": {
 		"type": "git",
-		"url": "git+https://www.davidmyska.com/utensils.git"
+		"url": "git+https://www.davidmyska.com/tool-shack.git"
 	},
   "scripts": {
     "build": "tsc -p ."
