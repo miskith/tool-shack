@@ -1,13 +1,18 @@
 import { IExtendingElementProps } from './interfaces/createElement';
 
-export const createElement = <T = HTMLElement> (tagName: string, props?: Partial<T> & IExtendingElementProps): T => {
+export const createElement = <T = HTMLElement> (tagName: string, props?: Partial<Omit<T, 'children'>> & IExtendingElementProps): T => {
   const element: HTMLElement = document.createElement(tagName);
 
   if (props) {
     for (let key in props) {
-      if (key==='children') {
+      const value = (props as any)[key];
+
+      if (key === 'role') {
+        element.setAttribute('key', value);
+      }
+      else if (key === 'children') {
         props.children!.forEach((child: HTMLElement) => element.appendChild(child));
-      } else if (key==='listeners') {
+      } else if (key === 'listeners') {
         for (let eventName in props.listeners!) {
           const functionList = (
             props.listeners![eventName] instanceof Array ? props.listeners![eventName] : [props.listeners![eventName]]
@@ -16,7 +21,7 @@ export const createElement = <T = HTMLElement> (tagName: string, props?: Partial
           functionList.forEach((fn: EventListenerOrEventListenerObject) => element.addEventListener(eventName, fn));
         }
       } else {
-        (element as any)[key] = (props as any)[key];
+        (element as any)[key] = value;
       }
     }
   }
