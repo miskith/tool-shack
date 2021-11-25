@@ -6,12 +6,12 @@
   "author": "David Myška",
   "license": "MIT",
 	"bugs": {
-		"url": "https://www.davidmyska.com/tool-shack/issues"
+		"url": "https://github.com/miskith/tool-shack/issues"
 	},
-	"homepage": "https://www.davidmyska.com/tool-shack#readme",
+	"homepage": "https://github.com/miskith/tool-shack#readme",
 	"repository": {
 		"type": "git",
-		"url": "git+https://www.davidmyska.com/tool-shack.git"
+		"url": "git+https://github.com/miskith/tool-shack.git"
 	},
   "scripts": {
     "build": "tsc -p ."
