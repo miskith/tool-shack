@@ -8,9 +8,12 @@ export const createElement = <T = HTMLElement> (tagName: string, props?: Partial
       const value = (props as any)[key];
 
       if (key === 'role') {
-        element.setAttribute('key', value);
-      }
-      else if (key === 'children') {
+        element.setAttribute(key, value);
+      } else if (key === 'aria') {
+        for (let ariaKey in props.aria!) {
+          element.setAttribute(`aria-${ariaKey}`, value[ariaKey]);
+        }
+      } else if (key === 'children') {
         props.children!.forEach((child: HTMLElement) => element.appendChild(child));
       } else if (key === 'listeners') {
         for (let eventName in props.listeners!) {
