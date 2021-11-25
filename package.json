@@ -3,9 +3,16 @@
   "version": "0.0.1",
   "description": "Collection of usefull functions to ease work",
   "main": "src",
-  "repository": "https://www.davidmyska.com/utensils",
   "author": "David Myška",
   "license": "MIT",
+	"bugs": {
+		"url": "https://www.davidmyska.com/utensils/issues"
+	},
+	"homepage": "https://www.davidmyska.com/utensils#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://www.davidmyska.com/utensils.git"
+	},
   "scripts": {
     "build": "tsc -p ."
   },
