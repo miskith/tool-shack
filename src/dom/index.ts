@@ -1,3 +1,5 @@
+export * from './interfaces';
+
 export * from './addAsyncEventListener';
 export * from './addEventListener';
 export * from './appendAfter';
