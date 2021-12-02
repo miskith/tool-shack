@@ -1,3 +1,11 @@
+/**
+ * Listen to events fired on elements that may currently not exist in the DOM
+ *
+ * @param elementSelector Selector for element(s) to match event target
+ * @param listeners List of event types and related callback(s)
+ * @param acceptBubbling Boolean switch to allow bubbling or accept only direct element match
+ * @returns void
+ */
 export const addAsyncEventListener = (
   elementSelector: string,
   listeners: Record<string, EventListener | EventListener[]>,

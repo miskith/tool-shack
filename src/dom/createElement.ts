@@ -1,5 +1,12 @@
 import { IExtendingElementProps } from './interfaces/createElement';
 
+/**
+ * Method for creating Node element and assigning multiple parameters, event listeners & children in one method call
+ *
+ * @param tagName Node tag name
+ * @param props List of attributes, event listeners or/and children to assign to the newly created element
+ * @returns Resulting Node element
+ */
 export const createElement = <T = HTMLElement> (tagName: string, props?: Partial<Omit<T, 'children'>> & IExtendingElementProps): T => {
   const element: HTMLElement = document.createElement(tagName);
 
