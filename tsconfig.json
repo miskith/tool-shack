@@ -13,12 +13,7 @@
     "baseUrl": ".",
     "declaration": true,
     "outDir": "./dist",
-    "lib": [
-      "dom",
-      "es2021"
-    ],
+    "lib": ["dom", "es2021"]
   },
-  "include": [
-    "src/**/*.ts"
-  ]
+  "include": ["src/**/*.ts"]
 }
