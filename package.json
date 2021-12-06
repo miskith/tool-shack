@@ -2,7 +2,7 @@
   "name": "tool-shack",
   "version": "0.0.6",
   "description": "Collection of usefull functions to ease work",
-  "main": "src",
+  "main": "dist",
   "author": "David Myška",
   "license": "MIT",
   "bugs": {
