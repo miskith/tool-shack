@@ -9,7 +9,7 @@ import { IExtendingElementProps } from './interfaces/createElement';
  */
 export const createElement = <T = HTMLElement>(
   tagName: string,
-  props?: Partial<Omit<T, 'children' | 'dataset'>> & IExtendingElementProps,
+  props?: Partial<Omit<T, 'children' | 'dataset' | 'style'>> & IExtendingElementProps,
 ): T => {
   const element: HTMLElement = document.createElement(tagName);
 
@@ -22,6 +22,10 @@ export const createElement = <T = HTMLElement>(
       } else if (key === 'aria') {
         for (let ariaKey in props.aria!) {
           element.setAttribute(`aria-${ariaKey}`, value[ariaKey]);
+        }
+      } else if (key === 'style') {
+        for (let styleKey in props.style!) {
+          (element.style as any)[styleKey] = value[styleKey];
         }
       } else if (key === 'children') {
         props.children!.forEach((child: HTMLElement) => element.appendChild(child));

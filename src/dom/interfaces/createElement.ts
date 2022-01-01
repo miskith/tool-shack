@@ -32,4 +32,5 @@ export interface IExtendingElementProps {
   role?: string;
   aria?: Partial<Record<TAriaLabelKey, string>>;
   dataset?: Record<string, string>;
+  style?: Record<string, string | number>;
 }
