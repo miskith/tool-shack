@@ -16,4 +16,4 @@ export const parseDuration = (durationInMs: number): IDuration => {
     seconds: Math.floor(durationInMs / 1000) % 60,
     milliseconds: Math.floor(durationInMs) % 1000,
   };
-}
+};

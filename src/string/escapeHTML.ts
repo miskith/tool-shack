@@ -9,4 +9,4 @@ export const escapeHTML = (html: string): string => {
   tempDiv.innerText = html;
 
   return tempDiv.innerHTML;
-}
+};

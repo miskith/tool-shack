@@ -15,4 +15,4 @@ export const tabFocusListener = (focusCallback?: () => void, blurCallback?: () =
       blurCallback?.call(this);
     }
   });
-}
+};

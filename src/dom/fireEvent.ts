@@ -5,4 +5,5 @@
  * @param eventType Type name of event that should be fired
  * @returns Result of the action
  */
-export const fireEvent = (element: HTMLElement, eventType: string): boolean => element.dispatchEvent(new Event(eventType));
+export const fireEvent = (element: HTMLElement, eventType: string): boolean =>
+  element.dispatchEvent(new Event(eventType));
