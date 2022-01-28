@@ -1,3 +1,4 @@
+export * from './isPushNotificationSupported';
 export * from './isShareSupported';
 export * from './isTabFocused';
 export * from './isTouchSupported';

@@ -3,7 +3,7 @@ import { IExtendedWindow } from './interfaces/isTouchSupported';
 /**
  * Check if user's browser supports touch events
  *
- * @returns Boolean indicating if user's browser support touch events
+ * @returns Boolean indicating if user's browser supports touch events
  */
 export const isTouchSupported = (): boolean =>
   'ontouchstart' in window ||
