@@ -1,6 +1,6 @@
 {
   "name": "tool-shack",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Collection of usefull functions to ease work",
   "author": {
     "name": "David Myška",
@@ -19,10 +19,17 @@
   "module": "dist/index.js",
   "main": "dist/index.js",
   "exports": {
-    "default": "./dist/index.js"
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
   },
   "files": [
     "dist/**/*.js",
+    "dist/**/*.d.ts",
     "src/**/*.ts"
   ],
   "scripts": {
