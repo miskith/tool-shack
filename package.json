@@ -28,7 +28,7 @@
   "scripts": {
     "build": "rm -rf dist && tsc-esm .",
     "format": "pretty-quick",
-    "generate-docs": "typedoc --name \"Tool-Shack\" --readme README.md src/*/index.ts",
+    "generate-docs": "rm -rf docs && typedoc --name \"Tool-Shack\" --readme README.md src/*/index.ts",
     "prepare": "husky install"
   },
   "devDependencies": {
