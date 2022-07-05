@@ -1,4 +1,5 @@
 export * from './isPushNotificationSupported';
+export * from './isScrollBehaviorSupported';
 export * from './isShareSupported';
 export * from './isTabFocused';
 export * from './isTouchSupported';
