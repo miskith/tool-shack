@@ -13,7 +13,7 @@
     "baseUrl": ".",
     "declaration": true,
     "outDir": "./dist",
-    "lib": ["dom", "esnext"],
+    "lib": ["dom", "esnext"]
   },
   "include": ["src/**/*.ts"]
 }
