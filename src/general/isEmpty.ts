@@ -1,4 +1,4 @@
-import { isNil } from './isNil';
+import { isNil } from './isNil.js';
 
 /**
  * Check if given value is empty

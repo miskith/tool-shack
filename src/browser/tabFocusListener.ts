@@ -1,4 +1,4 @@
-import { isTabFocused } from './isTabFocused';
+import { isTabFocused } from './isTabFocused.js';
 
 /**
  * Set callbacks for if current browser tab is in focus

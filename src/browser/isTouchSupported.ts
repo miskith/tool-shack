@@ -1,4 +1,4 @@
-import { IExtendedWindow } from './interfaces/isTouchSupported';
+import { IExtendedWindow } from './interfaces/isTouchSupported.js';
 
 /**
  * Check if user's browser supports touch events

@@ -1,4 +1,4 @@
-import { removeDiacritics } from './removeDiacritics';
+import { removeDiacritics } from './removeDiacritics.js';
 
 /**
  * Create slug from given string

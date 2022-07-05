@@ -1,9 +1,9 @@
-export * from './interfaces';
+export * from './interfaces/index.js';
 
-export * from './addAsyncEventListener';
-export * from './addClickOutsideListener';
-export * from './addEventListener';
-export * from './appendAfter';
-export * from './appendBefore';
-export * from './createElement';
-export * from './fireEvent';
+export * from './addAsyncEventListener.js';
+export * from './addClickOutsideListener.js';
+export * from './addEventListener.js';
+export * from './appendAfter.js';
+export * from './appendBefore.js';
+export * from './createElement.js';
+export * from './fireEvent.js';

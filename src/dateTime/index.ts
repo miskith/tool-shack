@@ -1,4 +1,4 @@
-export * from './interfaces';
+export * from './interfaces/index.js';
 
-export * from './dateAsIso';
-export * from './parseDuration';
+export * from './dateAsIso.js';
+export * from './parseDuration.js';

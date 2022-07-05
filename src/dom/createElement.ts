@@ -1,4 +1,4 @@
-import { IExtendingElementProps } from './interfaces/createElement';
+import { IExtendingElementProps } from './interfaces/createElement.js';
 
 /**
  * Method for creating Node element and assigning multiple parameters, event listeners & children in one method call
