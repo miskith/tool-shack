@@ -1,4 +1,4 @@
-import { getOffset } from '../dom/getElementOffset.js';
+import { getElementOffset } from '../dom/getElementOffset.js';
 import { scrollToPosition } from './scrollToPosition.js';
 
 /**
@@ -16,5 +16,5 @@ export const scrollToElement = (
 ): void => {
   offset = offset ?? window.innerHeight / 6;
 
-  scrollToPosition(0, getOffset(element).top - offset, smoothScroll);
+  scrollToPosition(0, getElementOffset(element).top - offset, smoothScroll);
 };
