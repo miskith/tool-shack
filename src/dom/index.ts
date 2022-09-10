@@ -7,3 +7,4 @@ export * from './appendAfter.js';
 export * from './appendBefore.js';
 export * from './createElement.js';
 export * from './fireEvent.js';
+export * from './getElementOffset.js';
