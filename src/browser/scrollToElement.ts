@@ -14,7 +14,5 @@ export const scrollToElement = (
   offset: number = 0,
   smoothScroll: boolean = true,
 ): void => {
-  offset = offset ?? window.innerHeight / 6;
-
   scrollToPosition(0, getElementOffset(element).top - offset, smoothScroll);
 };
