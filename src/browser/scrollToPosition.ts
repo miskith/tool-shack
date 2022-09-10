@@ -9,7 +9,12 @@ import { isScrollBehaviorSupported } from './isScrollBehaviorSupported.js';
  * @param target Target to be scrolled, window by default
  * @returns void
  */
-export const scrollToPosition = (x: number, y: number, smoothScroll: boolean = true, target: Window | HTMLElement = window): void => {
+export const scrollToPosition = (
+  x: number,
+  y: number,
+  smoothScroll: boolean = true,
+  target: Window | HTMLElement = window,
+): void => {
   if (smoothScroll && isScrollBehaviorSupported()) {
     target.scrollTo({
       top: y,
