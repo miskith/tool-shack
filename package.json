@@ -32,6 +32,7 @@
     "dist/**/*.d.ts",
     "src/**/*.ts"
   ],
+	"sideEffects": false,
   "scripts": {
     "build": "rm -rf dist && tsc -b .",
     "format": "pretty-quick",
