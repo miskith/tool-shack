@@ -4,4 +4,6 @@ export * from './isShareSupported.js';
 export * from './isTabFocused.js';
 export * from './isTouchSupported.js';
 export * from './preferColorScheme.js';
+export * from './scrollToElement.js';
+export * from './scrollToPosition.js';
 export * from './tabFocusListener.js';
