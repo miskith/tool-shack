@@ -32,7 +32,7 @@
     "dist/**/*.d.ts",
     "src/**/*.ts"
   ],
-	"sideEffects": false,
+  "sideEffects": false,
   "scripts": {
     "build": "rm -rf dist && tsc -b .",
     "format": "pretty-quick",
@@ -40,10 +40,10 @@
     "prepare": "husky install"
   },
   "devDependencies": {
-    "husky": "^8.0.1",
-    "prettier": "^2.7.1",
+    "husky": "^8.0.3",
+    "prettier": "^2.8.3",
     "pretty-quick": "^3.1.3",
-    "typedoc": "^0.23.14",
-    "typescript": "^4.8.3"
+    "typedoc": "^0.23.24",
+    "typescript": "^4.9.4"
   }
 }
