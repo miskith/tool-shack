@@ -24,7 +24,7 @@ export type TAriaLabelKey =
   | 'roledescription';
 
 export interface IExtendingElementProps {
-  children?: (HTMLElement | string)[];
+  children?: (HTMLElement | string | SVGElement)[];
   listeners?: Record<
     string,
     EventListenerOrEventListenerObject | EventListenerOrEventListenerObject[]
