@@ -28,7 +28,9 @@ export const createElement = <T = HTMLElement>(
           (element.style as any)[styleKey] = value[styleKey];
         }
       } else if (key === 'children') {
-        props.children!.forEach((child: HTMLElement) => element.appendChild(child));
+        const fragment = document.createDocumentFragment();
+        props.children!.forEach((child: HTMLElement) => fragment.appendChild(child));
+        element.appendChild(fragment);
       } else if (key === 'listeners') {
         for (let eventName in props.listeners!) {
           const functionList = (
