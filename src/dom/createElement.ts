@@ -27,7 +27,13 @@ export const createElement = <T = HTMLElement>(
         Object.assign(element.style, props.style);
       } else if (key === 'children') {
         const fragment = document.createDocumentFragment();
-        props.children!.forEach((child: HTMLElement) => fragment.appendChild(child));
+        for (const child of props.children!) {
+          if (typeof child === 'string') {
+            fragment.appendChild(document.createTextNode(child));
+          } else {
+            fragment.appendChild(child);
+          }
+        }
         element.appendChild(fragment);
       } else if (key === 'listeners') {
         for (let eventName in props.listeners!) {
