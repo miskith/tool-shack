@@ -42,9 +42,7 @@ export const createElement = <T = HTMLElement>(
           );
         }
       } else if (key === 'dataset') {
-        for (let datasetKey in props.dataset) {
-          element.dataset[datasetKey] = props.dataset[datasetKey];
-        }
+        Object.assign(element.dataset, props.dataset);
       } else {
         (element as any)[key] = value;
       }
