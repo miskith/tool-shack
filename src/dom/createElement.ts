@@ -20,8 +20,8 @@ export const createElement = <T = HTMLElement>(
       if (key === 'role') {
         element.setAttribute(key, value);
       } else if (key === 'aria') {
-        for (let ariaKey in props.aria!) {
-          element.setAttribute(`aria-${ariaKey}`, value[ariaKey]);
+        for (const [ariaKey, ariaValue] of Object.entries(props.aria!)) {
+          element.setAttribute(`aria-${ariaKey}`, ariaValue);
         }
       } else if (props.style) {
         Object.assign(element.style, props.style);
