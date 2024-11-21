@@ -24,9 +24,7 @@ export const createElement = <T = HTMLElement>(
           element.setAttribute(`aria-${ariaKey}`, ariaValue);
         }
       } else if (key === 'style') {
-        for (const [styleKey, styleValue] of Object.entries(props.style!)) {
-          (element.style as any)[styleKey] = styleValue;
-        }
+        Object.assign(element.style, props.style);
       } else if (key === 'children') {
         const fragment = document.createDocumentFragment();
         for (const child of props.children!) {
