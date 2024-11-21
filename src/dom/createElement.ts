@@ -23,8 +23,8 @@ export const createElement = <T = HTMLElement>(
         for (const [ariaKey, ariaValue] of Object.entries(props.aria!)) {
           element.setAttribute(`aria-${ariaKey}`, ariaValue);
         }
-      } else if (props.style) {
-        for (const [styleKey, styleValue] of Object.entries(props.style)) {
+      } else if (key === 'style') {
+        for (const [styleKey, styleValue] of Object.entries(props.style!)) {
           (element.style as any)[styleKey] = styleValue;
         }
       } else if (key === 'children') {
