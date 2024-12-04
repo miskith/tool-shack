@@ -1,19 +1,23 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
+    "target": "ES2022",
+    "module": "ESNext",
     "moduleResolution": "bundler",
     "strict": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
     "esModuleInterop": true,
-    "preserveConstEnums": true,
+    "allowSyntheticDefaultImports": true,
+    "preserveConstEnums": false,
     "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
     "importHelpers": true,
     "baseUrl": ".",
-    "declaration": true,
     "outDir": "./dist",
-    "lib": ["dom", "esnext"]
+    "lib": ["dom", "es2022"],
+    "types": []
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["dist", "node_modules"]
 }
