@@ -1,6 +1,6 @@
 {
   "name": "tool-shack",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "description": "Collection of usefull functions to ease work",
   "author": {
     "name": "David Myška",
@@ -16,27 +16,24 @@
     "url": "git+https://github.com/miskith/tool-shack.git"
   },
   "type": "module",
-  "module": "dist/index.js",
-  "main": "dist/index.js",
+  "module": "dist/esm/index.js",
+  "main": "dist/cjs/index.js",
+  "types": "dist/esm/index.d.ts",
   "exports": {
-    "./package.json": {
-      "default": "./package.json"
-    },
     ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js"
     }
   },
-  "files": [
-    "dist/**/*.js",
-    "dist/**/*.d.ts",
-    "src/**/*.ts"
-  ],
+  "files": ["dist"],
   "sideEffects": false,
   "scripts": {
-    "build": "rm -rf dist && tsc -b .",
+    "build": "yarn clean && yarn build:esm && yarn build:cjs",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
     "format": "pretty-quick",
     "generate-docs": "rm -rf docs && typedoc --name \"Tool-Shack\" --readme README.md src/*/index.ts",
+    "clean": "rm -rf dist",
     "prepare": "husky"
   },
   "devDependencies": {
