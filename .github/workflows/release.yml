@@ -1,0 +1,199 @@
+name: Release & Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      new_version:
+        description: 'Semver (e.g., 1.4.0, 1.4.0-beta.1)'
+        required: true
+        type: string
+      changelog:
+        description: 'Release notes / changelog (markdown allowed)'
+        required: true
+        type: string
+      dry_run:
+        description: 'Skip publish to npm (true/false)'
+        required: false
+        default: 'false'
+        type: choice
+        options: ['false', 'true']
+
+permissions:
+  contents: write
+  id-token: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Release ${{ inputs.new_version }}
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ inputs.new_version }}
+      CHANGELOG_BODY: ${{ inputs.changelog }}
+      DRY_RUN: ${{ inputs.dry_run }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Configure Git user
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Verify clean working tree
+        run: |
+          if ! git diff --quiet || ! git diff --cached --quiet; then
+            echo "::error::Working tree is not clean."
+            exit 1
+          fi
+
+      - name: Validate semver & project state
+        run: |
+          node -e "
+            const v='${{ env.VERSION }}';
+            if(!/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/.test(v)){
+              console.error('Invalid semver:', v);
+              process.exit(1);
+            }
+            const fs=require('fs');
+            if(!fs.existsSync('package.json')){ console.error('package.json not found'); process.exit(1); }
+          "
+
+      - name: Read package name and current version
+        id: pkg
+        run: |
+          node -e "
+            const fs=require('fs');
+            const p=JSON.parse(fs.readFileSync('package.json','utf8'));
+            console.log('name='+p.name);
+            console.log('current='+p.version);
+          " | tee pkg.txt
+          echo "name=$(grep '^name=' pkg.txt | cut -d= -f2-)" >> $GITHUB_OUTPUT
+          echo "current=$(grep '^current=' pkg.txt | cut -d= -f2-)" >> $GITHUB_OUTPUT
+
+      - name: Fail if target version already on npm
+        if: env.DRY_RUN == 'false'
+        run: |
+          PKG="${{ steps.pkg.outputs.name }}"
+          echo "Checking npm for ${PKG}@${VERSION}…"
+          if pnpm view "$PKG@${VERSION}" version > /dev/null 2>&1; then
+            echo "::error::Version ${PKG}@${VERSION} already exists on npm."
+            exit 1
+          fi
+
+      - name: Bump version in package.json (no tag yet)
+        run: pnpm version "${VERSION}" --no-git-tag-version
+
+      - name: Compute compare link
+        id: diff
+        run: |
+          set -e
+          REPO="${GITHUB_REPOSITORY}"
+          # Find latest tag different from the new version (semantic v*)
+          PREV=$(git tag --list 'v*' --sort=-v:refname | grep -v "^v${VERSION}$" | head -n1 || true)
+          if [ -z "$PREV" ]; then
+            # first release: compare from initial commit
+            BASE_SHA=$(git rev-list --max-parents=0 HEAD | tail -n1)
+            COMPARE="${BASE_SHA}...v${VERSION}"
+          else
+            COMPARE="${PREV}...v${VERSION}"
+          fi
+          echo "prev_tag=${PREV}" >> $GITHUB_OUTPUT
+          echo "compare_url=https://github.com/${REPO}/compare/${COMPARE}" >> $GITHUB_OUTPUT
+          echo "compare_range=${COMPARE}" >> $GITHUB_OUTPUT
+          echo "Previous tag: ${PREV:-<none>}"; echo "Compare: ${COMPARE}"
+
+      - name: Update CHANGELOG.md (prepends section with diff link)
+        run: |
+          set -e
+          TODAY="$(date -u +'%Y-%m-%d')"
+          TITLE="## v${VERSION} — ${TODAY}"
+          NOTES="${CHANGELOG_BODY}"
+          DIFF_URL="${{ steps.diff.outputs.compare_url }}"
+          [ -f CHANGELOG.md ] || echo "# Changelog" > CHANGELOG.md
+          cp CHANGELOG.md CHANGELOG.md.bak
+          {
+            printf "%s\n\n" "$TITLE"
+            printf "Full diff: [%s](%s)\n\n" "${{ steps.diff.outputs.compare_range }}" "$DIFF_URL"
+            printf "%s\n\n" "$NOTES"
+            printf "---\n\n"
+            cat CHANGELOG.md.bak
+          } > CHANGELOG.md
+          echo "Updated CHANGELOG.md with v${VERSION} and diff link"
+
+      - name: Commit version & changelog
+        run: |
+          git add package.json pnpm-lock.yaml 2>/dev/null || true
+          git add CHANGELOG.md
+          git commit -m "chore(release): v${VERSION}"
+
+      - name: Create tag
+        run: git tag -a "v${VERSION}" -m "Release v${VERSION}"
+
+      - name: Push commit & tag
+        env:
+          REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+        run: |
+          git push origin HEAD
+          git push origin "v${VERSION}"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build --if-present
+
+      - name: Test
+        run: pnpm test --if-present
+
+      - name: Create GitHub Release
+        env:
+          REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+        run: |
+          body="$(printf "%s\n\nFull diff: %s\n" "${CHANGELOG_BODY}" "${{ steps.diff.outputs.compare_url }}")"
+          gh release create "v${VERSION}" --title "v${VERSION}" --notes "$body"
+
+      - name: Configure npm auth
+        if: env.DRY_RUN == 'false'
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+
+      - name: Publish to npm
+        if: env.DRY_RUN == 'false'
+        run: |
+          PRIV=$(node -p "require('./package.json').private ? 'true' : 'false'")
+          if [ "$PRIV" = "true" ]; then
+            echo '::error::package.json has "private": true. Aborting publish.'
+            exit 1
+          fi
+          pnpm publish --provenance --access public
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "Released v${VERSION}"
+          echo "Package: ${{ steps.pkg.outputs.name }}"
+          echo "Prev tag: ${{ steps.diff.outputs.prev_tag }}"
+          echo "Diff: ${{ steps.diff.outputs.compare_url }}"
+          echo "Dry run: ${DRY_RUN}"
