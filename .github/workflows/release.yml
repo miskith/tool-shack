@@ -172,8 +172,27 @@ jobs:
         if: env.DRY_RUN == 'false'
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+
+      - name: Verify npm ownership / availability
+        if: env.DRY_RUN == 'false'
         run: |
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          set -e
+          PKG=$(node -p "require('./package.json').name")
+          ME=$(npm whoami)
+          echo "Package: $PKG ; npm user: $ME"
+          if npm view "$PKG" name >/dev/null 2>&1; then
+            echo "Package exists. Checking collaborators…"
+            # if you’re not listed, publish will 404 later
+            if npm access ls-collaborators "$PKG" 2>/dev/null | grep -q "\"$ME\""; then
+              echo "✔ You have publish rights to $PKG"
+            else
+              echo "::error::You do not have publish rights to $PKG. Use a scoped name (e.g., @miskith/tool-shack) or pick another."
+              exit 1
+            fi
+          else
+            echo "Package does not exist. First publish will create it."
+          fi
 
       - name: Publish to npm
         if: env.DRY_RUN == 'false'
