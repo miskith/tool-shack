@@ -112,7 +112,7 @@ jobs:
 
       - name: Push commit & tag
         env:
-          REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           git push origin HEAD
           git push origin "v${VERSION}"
@@ -162,7 +162,7 @@ jobs:
 
       - name: Create GitHub Release
         env:
-          REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           gh release create "v${VERSION}" \
             --title "v${VERSION}" \
