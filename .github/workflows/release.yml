@@ -183,7 +183,10 @@ jobs:
             echo '::error::package.json has "private": true. Aborting publish.'
             exit 1
           fi
-          pnpm publish --provenance --access --no-git-checks public
+
+          echo "Git status before publish:"; git status --porcelain || true
+
+          pnpm publish --provenance --access public --no-git-checks
 
       - name: Summary
         if: always()
