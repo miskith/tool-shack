@@ -46,6 +46,7 @@ jobs:
         with:
           node-version: 20
           registry-url: 'https://registry.npmjs.org/'
+          always-auth: true
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -171,11 +172,13 @@ jobs:
       - name: Configure npm auth
         if: env.DRY_RUN == 'false'
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc
 
       - name: Verify npm ownership / availability
         if: env.DRY_RUN == 'false'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           set -e
           PKG=$(node -p "require('./package.json').name")
@@ -196,6 +199,8 @@ jobs:
 
       - name: Publish to npm
         if: env.DRY_RUN == 'false'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           PRIV=$(node -p "require('./package.json').private ? 'true' : 'false'")
           if [ "$PRIV" = "true" ]; then
