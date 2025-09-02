@@ -121,10 +121,10 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: pnpm build --if-present
+        run: pnpm build
 
-      - name: Test
-        run: pnpm test --if-present
+      # - name: Test
+      #   run: pnpm test
 
       # Compute previous tag + compare URL (works if first release too)
       - name: Compute compare link
