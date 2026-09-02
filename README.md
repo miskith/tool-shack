@@ -36,7 +36,17 @@ yarn add tool-shack
 ## Quick Start
 
 ```typescript
-import { slugify, parseDuration, createElement, isTouchSupported, isValidJson, timeAgo, formatBytes, setLocalStorage, getLocalStorage } from 'tool-shack';
+import {
+  slugify,
+  parseDuration,
+  createElement,
+  isTouchSupported,
+  isValidJson,
+  timeAgo,
+  formatBytes,
+  setLocalStorage,
+  getLocalStorage,
+} from 'tool-shack';
 
 // String manipulation
 console.log(slugify('Hello World!')); // 'hello-world'
@@ -88,16 +98,16 @@ Utilities for feature detection, device capabilities, cookies, downloads, URL pa
 
 Type-safe `localStorage` and `sessionStorage` helpers with automatic JSON serialization and exception safety.
 
-| Function                            | Description                                                                 |
-| ----------------------------------- | --------------------------------------------------------------------------- |
-| `getLocalStorage(key, fallback?)`   | Retrieves item from localStorage with automatic JSON parsing                |
-| `setLocalStorage(key, value)`       | Stores item in localStorage with automatic JSON serialization               |
-| `removeLocalStorage(key)`           | Removes item from localStorage                                              |
-| `clearLocalStorage()`               | Clears all items from localStorage                                          |
-| `getSessionStorage(key, fallback?)` | Retrieves item from sessionStorage with automatic JSON parsing              |
-| `setSessionStorage(key, value)`     | Stores item in sessionStorage with automatic JSON serialization             |
-| `removeSessionStorage(key)`         | Removes item from sessionStorage                                            |
-| `clearSessionStorage()`             | Clears all items from sessionStorage                                        |
+| Function                            | Description                                                     |
+| ----------------------------------- | --------------------------------------------------------------- |
+| `getLocalStorage(key, fallback?)`   | Retrieves item from localStorage with automatic JSON parsing    |
+| `setLocalStorage(key, value)`       | Stores item in localStorage with automatic JSON serialization   |
+| `removeLocalStorage(key)`           | Removes item from localStorage                                  |
+| `clearLocalStorage()`               | Clears all items from localStorage                              |
+| `getSessionStorage(key, fallback?)` | Retrieves item from sessionStorage with automatic JSON parsing  |
+| `setSessionStorage(key, value)`     | Stores item in sessionStorage with automatic JSON serialization |
+| `removeSessionStorage(key)`         | Removes item from sessionStorage                                |
+| `clearSessionStorage()`             | Clears all items from sessionStorage                            |
 
 ---
 
@@ -118,7 +128,7 @@ Simplified element creation, async/outside event handling, clipboard operations,
 | `getElementOffset(element)`                              | Computes top, left, width, and height offsets relative to viewport/document                            |
 | `isInViewport(element, offset?)`                         | Checks if an element is currently within the visible viewport                                          |
 | `toggleFullscreen(element?)`                             | Toggles native fullscreen mode for an element or document root                                         |
-| `toggleFullscreenWithFallback(element?, options?)`       | Toggles fullscreen with CSS pseudo-fullscreen fallback for iOS Safari and unsupported browsers        |
+| `toggleFullscreenWithFallback(element?, options?)`       | Toggles fullscreen with CSS pseudo-fullscreen fallback for iOS Safari and unsupported browsers         |
 | `waitForElement(selector, timeout?, parent?)`            | Waits for an element to appear in the DOM using `MutationObserver`                                     |
 
 ---
