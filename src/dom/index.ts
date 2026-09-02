@@ -5,6 +5,8 @@ export * from './addClickOutsideListener.js';
 export * from './addEventListener.js';
 export * from './appendAfter.js';
 export * from './appendBefore.js';
+export * from './copyToClipboard.js';
 export * from './createElement.js';
 export * from './fireEvent.js';
 export * from './getElementOffset.js';
+export * from './waitForElement.js';

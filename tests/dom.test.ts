@@ -5,8 +5,10 @@ import {
   addClickOutsideListener,
   appendBefore,
   appendAfter,
+  copyToClipboard,
   fireEvent,
   getElementOffset,
+  waitForElement,
 } from '../src/dom/index.js';
 
 describe('dom utilities', () => {
@@ -141,6 +143,66 @@ describe('dom utilities', () => {
       const offset = getElementOffset(el);
       expect(offset.top).toBe(50);
       expect(offset.left).toBe(30);
+    });
+  });
+
+  describe('copyToClipboard', () => {
+    it('uses navigator.clipboard.writeText if available', async () => {
+      const writeTextMock = vi.fn().mockResolvedValue(undefined);
+      Object.defineProperty(navigator, 'clipboard', {
+        value: { writeText: writeTextMock },
+        configurable: true,
+      });
+
+      const result = await copyToClipboard('test copy');
+      expect(result).toBe(true);
+      expect(writeTextMock).toHaveBeenCalledWith('test copy');
+    });
+
+    it('falls back to document.execCommand when clipboard API is unavailable', async () => {
+      Object.defineProperty(navigator, 'clipboard', {
+        value: undefined,
+        configurable: true,
+      });
+      document.execCommand = vi.fn().mockReturnValue(true);
+
+      const result = await copyToClipboard('fallback copy');
+      expect(result).toBe(true);
+      expect(document.execCommand).toHaveBeenCalledWith('copy');
+    });
+  });
+
+  describe('waitForElement', () => {
+    it('resolves immediately if element already exists', async () => {
+      const div = document.createElement('div');
+      div.className = 'existing-item';
+      document.body.appendChild(div);
+
+      const found = await waitForElement('.existing-item');
+      expect(found).toBe(div);
+
+      document.body.removeChild(div);
+    });
+
+    it('resolves when element is added dynamically', async () => {
+      const promise = waitForElement('.dynamic-item');
+
+      const el = document.createElement('div');
+      el.className = 'dynamic-item';
+      setTimeout(() => {
+        document.body.appendChild(el);
+      }, 50);
+
+      const found = await promise;
+      expect(found).toBe(el);
+
+      document.body.removeChild(el);
+    });
+
+    it('rejects on timeout if element never appears', async () => {
+      await expect(waitForElement('.non-existent', 50)).rejects.toThrow(
+        /Timeout waiting for element/,
+      );
     });
   });
 });

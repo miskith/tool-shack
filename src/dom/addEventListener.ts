@@ -18,14 +18,14 @@ export const addEventListener = (
       : [element]
   ) as HTMLElement[];
 
-  elementList.forEach((element: HTMLElement) => {
-    for (let eventName in listeners) {
+  elementList.forEach((targetElement: HTMLElement) => {
+    for (const eventName in listeners) {
       const functionList = (
         listeners[eventName] instanceof Array ? listeners[eventName] : [listeners[eventName]]
       ) as EventListenerOrEventListenerObject[];
 
-      functionList.forEach((fn: EventListenerOrEventListenerObject) =>
-        element.addEventListener(eventName, fn),
+      functionList.forEach((listener: EventListenerOrEventListenerObject) =>
+        targetElement.addEventListener(eventName, listener),
       );
     }
   });

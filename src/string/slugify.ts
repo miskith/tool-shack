@@ -9,9 +9,14 @@ import { removeDiacritics } from './removeDiacritics.js';
  */
 export const slugify = (value: string, separator: string = '-'): string => {
   separator = separator.trim().substring(0, 1) || '-';
-  const removeCharsRegex = new RegExp(`[^\\\w\\\s${separator}]`, 'g');
+  const removeCharsRegex = new RegExp(`[^\\w\\s${separator}]`, 'g');
+  const escapedSeparator = separator.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const multipleSeparatorsRegex = new RegExp(`${escapedSeparator}+`, 'g');
+  const trimSeparatorsRegex = new RegExp(`^${escapedSeparator}+|${escapedSeparator}+$`, 'g');
 
   return removeDiacritics(value.trim().toLowerCase())
     .replace(removeCharsRegex, '')
-    .replace(/\s+/g, separator);
+    .replace(/\s+/g, separator)
+    .replace(multipleSeparatorsRegex, separator)
+    .replace(trimSeparatorsRegex, '');
 };

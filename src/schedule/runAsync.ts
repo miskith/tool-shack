@@ -1,20 +1,20 @@
 /**
  * Run function in asynchronously in Worker
  *
- * @param fn Function to be run asynchronously
+ * @param workerFunction Function to be run asynchronously in a worker
  * @returns Promise of expected result
  */
-export const runAsync = <T>(fn: () => any): Promise<T> => {
-  const worker = new Worker(URL.createObjectURL(new Blob([`postMessage((${fn})());`])));
+export const runAsync = <T>(workerFunction: () => T | Promise<T>): Promise<T> => {
+  const worker = new Worker(URL.createObjectURL(new Blob([`postMessage((${workerFunction})());`])));
 
-  return new Promise((res, rej) => {
-    worker.onmessage = ({ data }) => {
-      res(data);
+  return new Promise((resolve, reject) => {
+    worker.onmessage = ({ data }: MessageEvent<T>) => {
+      resolve(data);
       worker.terminate();
     };
 
-    worker.onerror = (err) => {
-      rej(err);
+    worker.onerror = (error: ErrorEvent) => {
+      reject(error);
       worker.terminate();
     };
   });

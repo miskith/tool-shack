@@ -4,7 +4,7 @@
  * @param date Date to be converted
  * @returns ISO format with timezone
  */
-export const dateAsIso = (date: Date) => {
+export const dateAsIso = (date: Date): string => {
   const timezoneOffset = date.getTimezoneOffset();
 
   let isoFormat = '';

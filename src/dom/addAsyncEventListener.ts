@@ -11,12 +11,12 @@ export const addAsyncEventListener = (
   listeners: Record<string, EventListener | EventListener[]>,
   acceptBubbling = true,
 ): void => {
-  for (let eventName in listeners) {
+  for (const eventName in listeners) {
     const functionList = (
       listeners[eventName] instanceof Array ? listeners[eventName] : [listeners[eventName]]
     ) as EventListener[];
 
-    functionList.forEach((fn: EventListener) =>
+    functionList.forEach((listener: EventListener) =>
       document.addEventListener(eventName, (event: Event) => {
         const target = event.target as HTMLElement;
         if (!target) {
@@ -24,9 +24,9 @@ export const addAsyncEventListener = (
         }
 
         if (!acceptBubbling && target.matches(elementSelector)) {
-          fn.call(this, event);
+          listener.call(this, event);
         } else if (acceptBubbling && target.closest(elementSelector)) {
-          fn.call(this, event);
+          listener.call(this, event);
         }
       }),
     );

@@ -1,3 +1,3 @@
 export interface IExtendedWindow extends Window {
-  DocumentTouch: any;
+  DocumentTouch: { new (...args: unknown[]): unknown };
 }

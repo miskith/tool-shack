@@ -1,4 +1,4 @@
-import { IExtendingElementProps } from './interfaces/createElement.js';
+import type { IExtendingElementProps } from './interfaces/createElement.js';
 
 /**
  * Method for creating Node element and assigning multiple parameters, event listeners & children in one method call
@@ -14,14 +14,16 @@ export const createElement = <T = HTMLElement>(
   const element: HTMLElement = document.createElement(tagName);
 
   if (props) {
-    for (let key in props) {
-      const value = (props as any)[key];
+    const propsRecord = props as Record<string, unknown>;
+
+    for (const key in props) {
+      const value = propsRecord[key];
 
       if (key === 'role') {
-        element.setAttribute(key, value);
+        element.setAttribute(key, value as string);
       } else if (key === 'aria') {
         for (const [ariaKey, ariaValue] of Object.entries(props.aria!)) {
-          element.setAttribute(`aria-${ariaKey}`, ariaValue);
+          element.setAttribute(`aria-${ariaKey}`, ariaValue as string);
         }
       } else if (key === 'style') {
         Object.assign(element.style, props.style);
@@ -36,21 +38,21 @@ export const createElement = <T = HTMLElement>(
         }
         element.appendChild(fragment);
       } else if (key === 'listeners') {
-        for (let eventName in props.listeners!) {
+        for (const eventName in props.listeners!) {
           const functionList = (
             props.listeners![eventName] instanceof Array
               ? props.listeners![eventName]
               : [props.listeners![eventName]]
           ) as EventListenerOrEventListenerObject[];
 
-          functionList.forEach((fn: EventListenerOrEventListenerObject) =>
-            element.addEventListener(eventName, fn),
+          functionList.forEach((listener: EventListenerOrEventListenerObject) =>
+            element.addEventListener(eventName, listener),
           );
         }
       } else if (key === 'dataset') {
         Object.assign(element.dataset, props.dataset);
       } else {
-        (element as any)[key] = value;
+        (element as unknown as Record<string, unknown>)[key] = value;
       }
     }
   }

@@ -1,4 +1,4 @@
-import { IDuration } from './interfaces/parseDuration.js';
+import type { IDuration } from './interfaces/parseDuration.js';
 
 /**
  * Parse duration in milliseconds into days, hours, minutes, seconds, milliseconds

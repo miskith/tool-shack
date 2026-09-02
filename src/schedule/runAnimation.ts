@@ -1,20 +1,19 @@
+import type { IAnimationControls } from './interfaces/runAnimation.js';
+
 /**
  * Run function as animation using requestAnimationFrame
  *
- * @param fn Function to be run as animation
+ * @param callback Function to be run as animation
  * @param autoStart If animation should start right away or just return callbacks
  * @returns Callbacks to start animation (startAnimation) and stop animation (stopAnimation)
  */
-export const runAnimation = (
-  fn: () => any,
-  autoStart = true,
-): { startAnimation: () => void; stopAnimation: () => void } => {
+export const runAnimation = (callback: () => void, autoStart = true): IAnimationControls => {
   let isRunning = false;
   let requestedAnimationFrame: number | null = null;
 
   const runAnimation = (): void => {
     requestedAnimationFrame = requestAnimationFrame((): void => {
-      fn.call(this);
+      callback.call(this);
 
       if (isRunning) {
         runAnimation();
