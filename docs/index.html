@@ -9,6 +9,420 @@
 <div class="tsd-page-title">
 <h1>Tool-Shack</h1></div>
 <div class="tsd-panel tsd-typography"><h1 id="tool-shack" class="tsd-anchor-link">tool-shack<a href="#tool-shack" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h1>
+<p><a href="https://www.npmjs.com/package/tool-shack"><img src="https://img.shields.io/npm/v/tool-shack.svg" alt="npm version"></a>
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+<a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-Ready-blue.svg" alt="TypeScript"></a></p>
+<p>A lightweight, zero-dependency TypeScript utility library providing essential helper functions for the browser, DOM manipulation, storage, strings, date/time formatting, scheduling, and general data validation.</p>
+<hr>
+<h2 id="features" class="tsd-anchor-link">Features<a href="#features" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<ul>
+<li>🪶 <strong>Zero dependencies</strong> &amp; lightweight</li>
+<li>📦 <strong>Dual module support</strong>: ESM (<code>import</code>) and CommonJS (<code>require</code>)</li>
+<li>🏷️ <strong>Full TypeScript support</strong> with built-in type definitions</li>
+<li>🌐 <strong>Browser &amp; DOM utilities</strong> to streamline frontend development</li>
+<li>⚡ <strong>Tree-shakeable</strong> exports</li>
+</ul>
+<hr>
+<h2 id="installation" class="tsd-anchor-link">Installation<a href="#installation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<pre><code class="bash"><span class="hl-0"># npm</span><br/><span class="hl-1">npm</span><span class="hl-2"> </span><span class="hl-3">install</span><span class="hl-2"> </span><span class="hl-3">tool-shack</span><br/><br/><span class="hl-0"># pnpm</span><br/><span class="hl-1">pnpm</span><span class="hl-2"> </span><span class="hl-3">add</span><span class="hl-2"> </span><span class="hl-3">tool-shack</span><br/><br/><span class="hl-0"># yarn</span><br/><span class="hl-1">yarn</span><span class="hl-2"> </span><span class="hl-3">add</span><span class="hl-2"> </span><span class="hl-3">tool-shack</span>
+</code><button type="button">Copy</button></pre>
+
+<hr>
+<h2 id="quick-start" class="tsd-anchor-link">Quick Start<a href="#quick-start" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<pre><code class="typescript"><span class="hl-4">import</span><span class="hl-2"> {</span><br/><span class="hl-2">  </span><span class="hl-5">slugify</span><span class="hl-2">,</span><br/><span class="hl-2">  </span><span class="hl-5">parseDuration</span><span class="hl-2">,</span><br/><span class="hl-2">  </span><span class="hl-5">createElement</span><span class="hl-2">,</span><br/><span class="hl-2">  </span><span class="hl-5">isTouchSupported</span><span class="hl-2">,</span><br/><span class="hl-2">  </span><span class="hl-5">isValidJson</span><span class="hl-2">,</span><br/><span class="hl-2">  </span><span class="hl-5">timeAgo</span><span class="hl-2">,</span><br/><span class="hl-2">  </span><span class="hl-5">formatBytes</span><span class="hl-2">,</span><br/><span class="hl-2">  </span><span class="hl-5">setLocalStorage</span><span class="hl-2">,</span><br/><span class="hl-2">  </span><span class="hl-5">getLocalStorage</span><span class="hl-2">,</span><br/><span class="hl-2">} </span><span class="hl-4">from</span><span class="hl-2"> </span><span class="hl-3">&#39;tool-shack&#39;</span><span class="hl-2">;</span><br/><br/><span class="hl-0">// String manipulation</span><br/><span class="hl-5">console</span><span class="hl-2">.</span><span class="hl-1">log</span><span class="hl-2">(</span><span class="hl-1">slugify</span><span class="hl-2">(</span><span class="hl-3">&#39;Hello World!&#39;</span><span class="hl-2">)); </span><span class="hl-0">// &#39;hello-world&#39;</span><br/><span class="hl-5">console</span><span class="hl-2">.</span><span class="hl-1">log</span><span class="hl-2">(</span><span class="hl-1">formatBytes</span><span class="hl-2">(</span><span class="hl-6">1572864</span><span class="hl-2">)); </span><span class="hl-0">// &#39;1.5 MB&#39;</span><br/><br/><span class="hl-0">// Storage</span><br/><span class="hl-1">setLocalStorage</span><span class="hl-2">(</span><span class="hl-3">&#39;user&#39;</span><span class="hl-2">, { </span><span class="hl-5">name:</span><span class="hl-2"> </span><span class="hl-3">&#39;Alice&#39;</span><span class="hl-2"> });</span><br/><span class="hl-5">console</span><span class="hl-2">.</span><span class="hl-1">log</span><span class="hl-2">(</span><span class="hl-1">getLocalStorage</span><span class="hl-2">(</span><span class="hl-3">&#39;user&#39;</span><span class="hl-2">)); </span><span class="hl-0">// { name: &#39;Alice&#39; }</span><br/><br/><span class="hl-0">// Date &amp; Time</span><br/><span class="hl-5">console</span><span class="hl-2">.</span><span class="hl-1">log</span><span class="hl-2">(</span><span class="hl-1">parseDuration</span><span class="hl-2">(</span><span class="hl-6">3661000</span><span class="hl-2">));</span><br/><span class="hl-0">// { days: 0, hours: 1, minutes: 1, seconds: 1, milliseconds: 0 }</span><br/><span class="hl-5">console</span><span class="hl-2">.</span><span class="hl-1">log</span><span class="hl-2">(</span><span class="hl-1">timeAgo</span><span class="hl-2">(</span><span class="hl-7">new</span><span class="hl-2"> </span><span class="hl-1">Date</span><span class="hl-2">(</span><span class="hl-5">Date</span><span class="hl-2">.</span><span class="hl-1">now</span><span class="hl-2">() - </span><span class="hl-6">5</span><span class="hl-2"> * </span><span class="hl-6">60000</span><span class="hl-2">))); </span><span class="hl-0">// &#39;5 minutes ago&#39;</span><br/><br/><span class="hl-0">// General Validation</span><br/><span class="hl-5">console</span><span class="hl-2">.</span><span class="hl-1">log</span><span class="hl-2">(</span><span class="hl-1">isValidJson</span><span class="hl-2">(</span><span class="hl-3">&#39;{&quot;valid&quot;: true}&#39;</span><span class="hl-2">)); </span><span class="hl-0">// true</span>
+</code><button type="button">Copy</button></pre>
+
+<hr>
+<h2 id="modules-apis" class="tsd-anchor-link">Modules &amp; APIs<a href="#modules-apis" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="🌐-browser-" class="tsd-anchor-link">🌐 Browser (<code>browser</code>)<a href="#🌐-browser-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Utilities for feature detection, device capabilities, cookies, downloads, URL parameters, and tab focus.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>detectOS()</code></td>
+<td>Detects user operating system (<code>'ios'</code>, <code>'android'</code>, <code>'macos'</code>, etc.)</td>
+</tr>
+<tr>
+<td><code>isTouchSupported()</code></td>
+<td>Checks if the current device/browser supports touch events</td>
+</tr>
+<tr>
+<td><code>isPushNotificationSupported()</code></td>
+<td>Checks if Push Notifications and Service Workers are supported</td>
+</tr>
+<tr>
+<td><code>isScrollBehaviorSupported()</code></td>
+<td>Checks if native smooth scroll behavior is supported</td>
+</tr>
+<tr>
+<td><code>isShareSupported()</code></td>
+<td>Checks if the Web Share API (<code>navigator.share</code>) is supported</td>
+</tr>
+<tr>
+<td><code>isTabFocused()</code></td>
+<td>Checks whether the browser tab currently has focus</td>
+</tr>
+<tr>
+<td><code>tabFocusListener(onFocus, onBlur)</code></td>
+<td>Subscribes callbacks for window/tab focus and blur events</td>
+</tr>
+<tr>
+<td><code>preferColorScheme()</code></td>
+<td>Detects user color scheme preference (<code>'dark'</code>, <code>'light'</code>, or <code>null</code>)</td>
+</tr>
+<tr>
+<td><code>scrollToElement(element, options)</code></td>
+<td>Smoothly scrolls the window or container to a target element</td>
+</tr>
+<tr>
+<td><code>scrollToPosition(options)</code></td>
+<td>Smoothly scrolls to specific x/y coordinates</td>
+</tr>
+<tr>
+<td><code>downloadFile(data, filename, mimeType?)</code></td>
+<td>Programmatically triggers file download in the browser</td>
+</tr>
+<tr>
+<td><code>getQueryParams(url?)</code></td>
+<td>Extracts URL search query parameters into a key-value object</td>
+</tr>
+<tr>
+<td><code>networkStatusListener(onOnline, onOffline)</code></td>
+<td>Subscribes to browser online/offline events with cleanup handle</td>
+</tr>
+<tr>
+<td><code>getCookie(name)</code></td>
+<td>Retrieves and decodes a cookie value by name</td>
+</tr>
+<tr>
+<td><code>setCookie(name, value, options?)</code></td>
+<td>Sets a browser cookie with days, path, domain, secure, and sameSite</td>
+</tr>
+<tr>
+<td><code>deleteCookie(name, options?)</code></td>
+<td>Deletes a browser cookie by name</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="💾-storage-" class="tsd-anchor-link">💾 Storage (<code>storage</code>)<a href="#💾-storage-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Type-safe <code>localStorage</code> and <code>sessionStorage</code> helpers with automatic JSON serialization and exception safety.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>getLocalStorage(key, fallback?)</code></td>
+<td>Retrieves item from localStorage with automatic JSON parsing</td>
+</tr>
+<tr>
+<td><code>setLocalStorage(key, value)</code></td>
+<td>Stores item in localStorage with automatic JSON serialization</td>
+</tr>
+<tr>
+<td><code>removeLocalStorage(key)</code></td>
+<td>Removes item from localStorage</td>
+</tr>
+<tr>
+<td><code>clearLocalStorage()</code></td>
+<td>Clears all items from localStorage</td>
+</tr>
+<tr>
+<td><code>getSessionStorage(key, fallback?)</code></td>
+<td>Retrieves item from sessionStorage with automatic JSON parsing</td>
+</tr>
+<tr>
+<td><code>setSessionStorage(key, value)</code></td>
+<td>Stores item in sessionStorage with automatic JSON serialization</td>
+</tr>
+<tr>
+<td><code>removeSessionStorage(key)</code></td>
+<td>Removes item from sessionStorage</td>
+</tr>
+<tr>
+<td><code>clearSessionStorage()</code></td>
+<td>Clears all items from sessionStorage</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="🧱-dom-" class="tsd-anchor-link">🧱 DOM (<code>dom</code>)<a href="#🧱-dom-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Simplified element creation, async/outside event handling, clipboard operations, viewport detection, layout-shift-free scroll lock, and fullscreen.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>createElement(tagName, props)</code></td>
+<td>Creates a DOM element with attributes, styles, dataset, ARIA, listeners, and children in a single call</td>
+</tr>
+<tr>
+<td><code>addEventListener(target, type, listener, options)</code></td>
+<td>Attaches event listener(s) with support for multiple event types and array of targets</td>
+</tr>
+<tr>
+<td><code>addAsyncEventListener(target, type, listener, options)</code></td>
+<td>Attaches an asynchronous delegated event listener</td>
+</tr>
+<tr>
+<td><code>addClickOutsideListener(element, callback)</code></td>
+<td>Triggers a callback when clicking outside a specified element</td>
+</tr>
+<tr>
+<td><code>appendBefore(target, element)</code></td>
+<td>Inserts an element immediately before the target node</td>
+</tr>
+<tr>
+<td><code>appendAfter(target, element)</code></td>
+<td>Inserts an element immediately after the target node</td>
+</tr>
+<tr>
+<td><code>copyToClipboard(text)</code></td>
+<td>Copies text to clipboard via Clipboard API with legacy fallback</td>
+</tr>
+<tr>
+<td><code>fireEvent(element, eventName, detail)</code></td>
+<td>Dispatches a custom or native DOM event</td>
+</tr>
+<tr>
+<td><code>getElementOffset(element)</code></td>
+<td>Computes top, left, width, and height offsets relative to viewport/document</td>
+</tr>
+<tr>
+<td><code>isInViewport(element, offset?)</code></td>
+<td>Checks if an element is currently within the visible viewport</td>
+</tr>
+<tr>
+<td><code>toggleFullscreen(element?)</code></td>
+<td>Toggles native fullscreen mode for an element or document root</td>
+</tr>
+<tr>
+<td><code>toggleFullscreenWithFallback(element?, options?)</code></td>
+<td>Toggles fullscreen with CSS pseudo-fullscreen fallback for iOS Safari and unsupported browsers</td>
+</tr>
+<tr>
+<td><code>waitForElement(selector, timeout?, parent?)</code></td>
+<td>Waits for an element to appear in the DOM using <code>MutationObserver</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="🔤-string-" class="tsd-anchor-link">🔤 String (<code>string</code>)<a href="#🔤-string-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Case conversions, string transformations, formatting, escaping, masking, and random string generators.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>camelCase(value)</code></td>
+<td>Converts string to <code>camelCase</code></td>
+</tr>
+<tr>
+<td><code>capitalize(value)</code></td>
+<td>Capitalizes the first character of a string</td>
+</tr>
+<tr>
+<td><code>decodeBase64(value)</code></td>
+<td>Safely decodes a Base64 string to a Unicode string</td>
+</tr>
+<tr>
+<td><code>encodeBase64(value)</code></td>
+<td>Safely encodes a Unicode string to a Base64 string</td>
+</tr>
+<tr>
+<td><code>kebabCase(value)</code></td>
+<td>Converts string to <code>kebab-case</code></td>
+</tr>
+<tr>
+<td><code>pascalCase(value)</code></td>
+<td>Converts string to <code>PascalCase</code></td>
+</tr>
+<tr>
+<td><code>snakeCase(value)</code></td>
+<td>Converts string to <code>snake_case</code></td>
+</tr>
+<tr>
+<td><code>slugify(value, separator?)</code></td>
+<td>Converts text into URL-safe slug with diacritics removal (default <code>-</code>)</td>
+</tr>
+<tr>
+<td><code>removeDiacritics(value)</code></td>
+<td>Strips accent marks and diacritics from text</td>
+</tr>
+<tr>
+<td><code>truncate(value, length, suffix?)</code></td>
+<td>Truncates a string to a given length and appends a suffix (default <code>...</code>)</td>
+</tr>
+<tr>
+<td><code>mask(value, options?)</code></td>
+<td>Masks sensitive string characters (e.g. for card numbers or tokens)</td>
+</tr>
+<tr>
+<td><code>formatBytes(bytes, decimals?)</code></td>
+<td>Formats byte number into readable string (<code>'1.5 MB'</code>, <code>'2 KB'</code>)</td>
+</tr>
+<tr>
+<td><code>escapeHTML(value)</code></td>
+<td>Escapes HTML entities (<code>&amp;</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&quot;</code>, <code>'</code>)</td>
+</tr>
+<tr>
+<td><code>unescapeHTML(value)</code></td>
+<td>Unescapes HTML entities back to plain text</td>
+</tr>
+<tr>
+<td><code>byteSize(value)</code></td>
+<td>Calculates the byte length of a string in UTF-8</td>
+</tr>
+<tr>
+<td><code>randomString(length?, charset?)</code></td>
+<td>Generates random string using <code>Math.random</code></td>
+</tr>
+<tr>
+<td><code>randomCryptoString(length?, charset?)</code></td>
+<td>Generates cryptographically secure random string using Web Crypto API</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="⏱️-date-time-" class="tsd-anchor-link">⏱️ Date &amp; Time (<code>dateTime</code>)<a href="#⏱️-date-time-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Date formatting, duration parsing, relative time, and calendar day comparison.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>parseDuration(durationInMs)</code></td>
+<td>Breaks down milliseconds into <code>{ days, hours, minutes, seconds, milliseconds }</code></td>
+</tr>
+<tr>
+<td><code>dateAsIso(date?)</code></td>
+<td>Formats a Date object as an ISO string (<code>YYYY-MM-DDTHH:mm:ss.sssZ</code>)</td>
+</tr>
+<tr>
+<td><code>timeAgo(date, locale?)</code></td>
+<td>Formats a date into a human-readable relative string (<code>'5 minutes ago'</code>)</td>
+</tr>
+<tr>
+<td><code>isSameDay(date1, date2)</code></td>
+<td>Checks if two dates fall on the same calendar day</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="⚙️-general-" class="tsd-anchor-link">⚙️ General (<code>general</code>)<a href="#⚙️-general-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Array deduplication, picking, grouping &amp; chunking, deep equality, number clamping, value safety checks, and JSON validation.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pick(object, keys)</code></td>
+<td>Creates object composed of picked object properties</td>
+</tr>
+<tr>
+<td><code>unique(array, keyFn?)</code></td>
+<td>Deduplicates array items by reference or key callback</td>
+</tr>
+<tr>
+<td><code>isEqual(a, b)</code></td>
+<td>Performs deep structural comparison between two values</td>
+</tr>
+<tr>
+<td><code>clamp(value, min, max)</code></td>
+<td>Constrains a number between min and max boundaries</td>
+</tr>
+<tr>
+<td><code>groupBy(array, keyFn)</code></td>
+<td>Groups array elements into an object by key</td>
+</tr>
+<tr>
+<td><code>chunk(array, size?)</code></td>
+<td>Splits array into chunks of specified size</td>
+</tr>
+<tr>
+<td><code>isEmpty(value)</code></td>
+<td>Checks if a string, array, map, set, or object is empty</td>
+</tr>
+<tr>
+<td><code>isNil(value)</code></td>
+<td>Checks if a value is <code>null</code> or <code>undefined</code></td>
+</tr>
+<tr>
+<td><code>isValidJson(value)</code></td>
+<td>Validates whether a given string is valid JSON</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="⏳-schedule-" class="tsd-anchor-link">⏳ Schedule (<code>schedule</code>)<a href="#⏳-schedule-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Debouncing, throttling, async retry, sleep, and animation frames.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>debounce(fn, delay?)</code></td>
+<td>Creates debounced function with <code>.cancel()</code> handle</td>
+</tr>
+<tr>
+<td><code>throttle(fn, limit?)</code></td>
+<td>Creates throttled function with <code>.cancel()</code> handle</td>
+</tr>
+<tr>
+<td><code>sleep(ms)</code></td>
+<td>Promise-based delay helper (<code>await sleep(500)</code>)</td>
+</tr>
+<tr>
+<td><code>retry(fn, options?)</code></td>
+<td>Retries async function with exponential backoff before failing</td>
+</tr>
+<tr>
+<td><code>runAnimation(callback, autoStart?)</code></td>
+<td>Executes a callback with <code>requestAnimationFrame</code> and returns a cancel function</td>
+</tr>
+<tr>
+<td><code>runAsync(callback)</code></td>
+<td>Runs a callback asynchronously in a Web Worker</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="documentation" class="tsd-anchor-link">Documentation<a href="#documentation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>Full API documentation and type definitions are available at:<br>
+👉 <strong><a href="https://storage.davidmyska.com/tool-shack/">https://storage.davidmyska.com/tool-shack/</a></strong></p>
+<hr>
+<h2 id="license" class="tsd-anchor-link">License<a href="#license" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p><a href="https://opensource.org/licenses/MIT">MIT</a> © <a href="https://www.davidmyska.com/">David Myška</a></p>
 </div></div>
 <div class="col-sidebar">
 <div class="page-menu">
@@ -24,7 +438,23 @@
 <div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
 <details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg>
 <h3>On This Page</h3></summary>
-<div class="tsd-accordion-details"><a href="#tool-shack"><span>tool-<wbr/>shack</span></a></div></details></div>
+<div class="tsd-accordion-details"><a href="#tool-shack"><span>tool-<wbr/>shack</span></a>
+<ul>
+<li><a href="#features"><span>Features</span></a></li>
+<li><a href="#installation"><span>Installation</span></a></li>
+<li><a href="#quick-start"><span>Quick <wbr/>Start</span></a></li>
+<li><a href="#modules-apis"><span>Modules &amp; <wbr/>AP<wbr/>Is</span></a></li>
+<li>
+<ul>
+<li><a href="#🌐-browser-"><span>🌐 <wbr/>Browser ()</span></a></li>
+<li><a href="#💾-storage-"><span>💾 <wbr/>Storage ()</span></a></li>
+<li><a href="#🧱-dom-"><span>🧱 <wbr/>DOM ()</span></a></li>
+<li><a href="#🔤-string-"><span>🔤 <wbr/>String ()</span></a></li>
+<li><a href="#⏱️-date-time-"><span>⏱️ <wbr/>Date &amp; <wbr/>Time ()</span></a></li>
+<li><a href="#⚙️-general-"><span>⚙️ <wbr/>General ()</span></a></li>
+<li><a href="#⏳-schedule-"><span>⏳ <wbr/>Schedule ()</span></a></li></ul></li>
+<li><a href="#documentation"><span>Documentation</span></a></li>
+<li><a href="#license"><span>License</span></a></li></ul></div></details></div>
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="modules.html">Tool-Shack</a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container">
