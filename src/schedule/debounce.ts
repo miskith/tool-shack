@@ -9,7 +9,7 @@ import type { IDebouncedFunction } from './interfaces/debounce.js';
  */
 export const debounce = <T extends (...args: unknown[]) => unknown>(
   callback: T,
-  delay: number = 300,
+  delay = 300,
 ): IDebouncedFunction<T> => {
   let timer: ReturnType<typeof setTimeout> | null = null;
 

@@ -7,7 +7,7 @@ const DEFAULT_CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012
  * @param charset Character set to use (defaults to alphanumeric)
  * @returns Random string
  */
-export const randomString = (length: number = 16, charset: string = DEFAULT_CHARSET): string => {
+export const randomString = (length = 16, charset: string = DEFAULT_CHARSET): string => {
   let result = '';
   const charsetLength = charset.length;
   for (let i = 0; i < length; i++) {

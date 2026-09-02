@@ -6,11 +6,7 @@
  * @param appendedString String to append at the end, be default "..."
  * @returns Truncated value if needed otherwise original value
  */
-export const truncate = (
-  value: string,
-  maxLength: number,
-  appendedString: string = '...',
-): string => {
+export const truncate = (value: string, maxLength: number, appendedString = '...'): string => {
   if (maxLength < appendedString.length) {
     return appendedString.slice(0, maxLength);
   }

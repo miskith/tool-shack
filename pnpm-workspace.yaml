@@ -2,3 +2,4 @@ packages:
   - '.'
 minimumReleaseAgeExclude:
   - happy-dom@20.12.2
+  - eslint-plugin-jsdoc@64.3.4

@@ -37,7 +37,7 @@ export const runAnimation = (callback: () => void, autoStart = true): IAnimation
 
     isRunning = false;
 
-    if (!!requestedAnimationFrame) {
+    if (requestedAnimationFrame !== null) {
       cancelAnimationFrame(requestedAnimationFrame);
     }
   };

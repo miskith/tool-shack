@@ -12,7 +12,7 @@ import { isScrollBehaviorSupported } from './isScrollBehaviorSupported.js';
 export const scrollToPosition = (
   x: number,
   y: number,
-  smoothScroll: boolean = true,
+  smoothScroll = true,
   target: Window | HTMLElement = window,
 ): void => {
   if (smoothScroll && isScrollBehaviorSupported()) {

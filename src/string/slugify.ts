@@ -7,7 +7,7 @@ import { removeDiacritics } from './removeDiacritics.js';
  * @param separator One character to be used as separator (if provided longer than one character, will be automatically shortened), dash ('-') by default
  * @returns Slugified string
  */
-export const slugify = (value: string, separator: string = '-'): string => {
+export const slugify = (value: string, separator = '-'): string => {
   separator = separator.trim().substring(0, 1) || '-';
   const removeCharsRegex = new RegExp(`[^\\w\\s${separator}]`, 'g');
   const escapedSeparator = separator.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

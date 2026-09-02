@@ -7,10 +7,7 @@ const DEFAULT_CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012
  * @param charset Character set to use (defaults to alphanumeric)
  * @returns Cryptographically secure random string
  */
-export const randomCryptoString = (
-  length: number = 16,
-  charset: string = DEFAULT_CHARSET,
-): string => {
+export const randomCryptoString = (length = 16, charset: string = DEFAULT_CHARSET): string => {
   const charsetLength = charset.length;
   const randomValues = new Uint32Array(length);
   crypto.getRandomValues(randomValues);

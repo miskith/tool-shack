@@ -9,8 +9,8 @@ export const networkStatusListener = (
   onOnline?: () => void,
   onOffline?: () => void,
 ): (() => void) => {
-  const handleOnline = () => onOnline?.();
-  const handleOffline = () => onOffline?.();
+  const handleOnline = (): void => onOnline?.();
+  const handleOffline = (): void => onOffline?.();
 
   window.addEventListener('online', handleOnline);
   window.addEventListener('offline', handleOffline);

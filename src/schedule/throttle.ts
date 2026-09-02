@@ -9,7 +9,7 @@ import type { IThrottledFunction } from './interfaces/throttle.js';
  */
 export const throttle = <T extends (...args: unknown[]) => unknown>(
   callback: T,
-  limit: number = 300,
+  limit = 300,
 ): IThrottledFunction<T> => {
   let timer: ReturnType<typeof setTimeout> | null = null;
   let lastArgs: Parameters<T> | null = null;

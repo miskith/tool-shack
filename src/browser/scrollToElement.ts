@@ -9,10 +9,6 @@ import { scrollToPosition } from './scrollToPosition.js';
  * @param smoothScroll Enable smooth scroll if supported, true by default
  * @returns void
  */
-export const scrollToElement = (
-  element: HTMLElement,
-  offset: number = 0,
-  smoothScroll: boolean = true,
-): void => {
+export const scrollToElement = (element: HTMLElement, offset = 0, smoothScroll = true): void => {
   scrollToPosition(0, getElementOffset(element).top - offset, smoothScroll);
 };

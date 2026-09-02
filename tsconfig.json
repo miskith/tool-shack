@@ -6,7 +6,6 @@
     "alwaysStrict": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "preserveConstEnums": false,
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
