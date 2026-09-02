@@ -9,4 +9,7 @@ export * from './copyToClipboard.js';
 export * from './createElement.js';
 export * from './fireEvent.js';
 export * from './getElementOffset.js';
+export * from './isInViewport.js';
+export * from './toggleFullscreen.js';
+export * from './toggleFullscreenWithFallback.js';
 export * from './waitForElement.js';

@@ -1,5 +1,15 @@
 import { describe, it, expect } from 'vitest';
-import { chunk, clamp, groupBy, isEmpty, isNil, isValidJson } from '../src/general/index.js';
+import {
+  chunk,
+  clamp,
+  groupBy,
+  isEmpty,
+  isEqual,
+  isNil,
+  isValidJson,
+  pick,
+  unique,
+} from '../src/general/index.js';
 
 describe('general utilities', () => {
   describe('isNil', () => {
@@ -132,6 +142,81 @@ describe('general utilities', () => {
 
     it('returns single chunk if size >= array length', () => {
       expect(chunk([1, 2, 3], 10)).toEqual([[1, 2, 3]]);
+    });
+  });
+
+  describe('pick', () => {
+    it('creates object composed of picked keys', () => {
+      const user = { id: 1, name: 'Alice', email: 'alice@test.com', active: true };
+      expect(pick(user, ['id', 'name'])).toEqual({ id: 1, name: 'Alice' });
+      expect(pick(user, ['email'])).toEqual({ email: 'alice@test.com' });
+    });
+
+    it('handles empty keys or missing properties', () => {
+      const user = { a: 1, b: 2 };
+      expect(pick(user, [])).toEqual({});
+      expect(pick({}, ['id' as never])).toEqual({});
+    });
+  });
+
+  describe('unique', () => {
+    it('deduplicates primitive array values', () => {
+      expect(unique([1, 2, 2, 3, 1, 4])).toEqual([1, 2, 3, 4]);
+      expect(unique(['a', 'b', 'a', 'c'])).toEqual(['a', 'b', 'c']);
+      expect(unique([])).toEqual([]);
+    });
+
+    it('deduplicates object array values with custom key function', () => {
+      const items = [
+        { id: 1, name: 'foo' },
+        { id: 2, name: 'bar' },
+        { id: 1, name: 'duplicate' },
+      ];
+      expect(unique(items, (item) => item.id)).toEqual([
+        { id: 1, name: 'foo' },
+        { id: 2, name: 'bar' },
+      ]);
+    });
+  });
+
+  describe('isEqual', () => {
+    it('compares primitives correctly', () => {
+      expect(isEqual(1, 1)).toBe(true);
+      expect(isEqual('a', 'a')).toBe(true);
+      expect(isEqual(true, true)).toBe(true);
+      expect(isEqual(null, null)).toBe(true);
+      expect(isEqual(undefined, undefined)).toBe(true);
+      expect(isEqual(NaN, NaN)).toBe(true);
+
+      expect(isEqual(1, 2)).toBe(false);
+      expect(isEqual('a', 'b')).toBe(false);
+      expect(isEqual(null, undefined)).toBe(false);
+      expect(isEqual(0, false)).toBe(false);
+    });
+
+    it('compares Dates and RegExps', () => {
+      expect(isEqual(new Date(2026, 0, 1), new Date(2026, 0, 1))).toBe(true);
+      expect(isEqual(new Date(2026, 0, 1), new Date(2025, 0, 1))).toBe(false);
+
+      expect(isEqual(/abc/g, /abc/g)).toBe(true);
+      expect(isEqual(/abc/g, /abc/i)).toBe(false);
+    });
+
+    it('deeply compares nested objects and arrays', () => {
+      const objA = { a: 1, b: [2, 3], c: { d: 'test' } };
+      const objB = { a: 1, b: [2, 3], c: { d: 'test' } };
+      const objC = { a: 1, b: [2, 4], c: { d: 'test' } };
+
+      expect(isEqual(objA, objB)).toBe(true);
+      expect(isEqual(objA, objC)).toBe(false);
+      expect(isEqual([1, [2, [3]]], [1, [2, [3]]])).toBe(true);
+      expect(isEqual([1, [2, [3]]], [1, [2, [4]]])).toBe(false);
+    });
+
+    it('handles mismatched key count or type differences', () => {
+      expect(isEqual({ a: 1 }, { a: 1, b: 2 })).toBe(false);
+      expect(isEqual({ a: 1 }, null)).toBe(false);
+      expect(isEqual([1, 2], { 0: 1, 1: 2 })).toBe(false);
     });
   });
 });

@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
 
-A lightweight, zero-dependency TypeScript utility library providing essential helper functions for the browser, DOM manipulation, strings, date/time formatting, scheduling, and general data validation.
+A lightweight, zero-dependency TypeScript utility library providing essential helper functions for the browser, DOM manipulation, storage, strings, date/time formatting, scheduling, and general data validation.
 
 ---
 
@@ -36,14 +36,20 @@ yarn add tool-shack
 ## Quick Start
 
 ```typescript
-import { slugify, parseDuration, createElement, isTouchSupported, isValidJson } from 'tool-shack';
+import { slugify, parseDuration, createElement, isTouchSupported, isValidJson, timeAgo, formatBytes, setLocalStorage, getLocalStorage } from 'tool-shack';
 
 // String manipulation
 console.log(slugify('Hello World!')); // 'hello-world'
+console.log(formatBytes(1572864)); // '1.5 MB'
+
+// Storage
+setLocalStorage('user', { name: 'Alice' });
+console.log(getLocalStorage('user')); // { name: 'Alice' }
 
 // Date & Time
 console.log(parseDuration(3661000));
 // { days: 0, hours: 1, minutes: 1, seconds: 1, milliseconds: 0 }
+console.log(timeAgo(new Date(Date.now() - 5 * 60000))); // '5 minutes ago'
 
 // General Validation
 console.log(isValidJson('{"valid": true}')); // true
@@ -59,6 +65,7 @@ Utilities for feature detection, device capabilities, cookies, downloads, URL pa
 
 | Function                                     | Description                                                           |
 | -------------------------------------------- | --------------------------------------------------------------------- |
+| `detectOS()`                                 | Detects user operating system (`'ios'`, `'android'`, `'macos'`, etc.) |
 | `isTouchSupported()`                         | Checks if the current device/browser supports touch events            |
 | `isPushNotificationSupported()`              | Checks if Push Notifications and Service Workers are supported        |
 | `isScrollBehaviorSupported()`                | Checks if native smooth scroll behavior is supported                  |
@@ -77,9 +84,26 @@ Utilities for feature detection, device capabilities, cookies, downloads, URL pa
 
 ---
 
+### 💾 Storage (`storage`)
+
+Type-safe `localStorage` and `sessionStorage` helpers with automatic JSON serialization and exception safety.
+
+| Function                            | Description                                                                 |
+| ----------------------------------- | --------------------------------------------------------------------------- |
+| `getLocalStorage(key, fallback?)`   | Retrieves item from localStorage with automatic JSON parsing                |
+| `setLocalStorage(key, value)`       | Stores item in localStorage with automatic JSON serialization               |
+| `removeLocalStorage(key)`           | Removes item from localStorage                                              |
+| `clearLocalStorage()`               | Clears all items from localStorage                                          |
+| `getSessionStorage(key, fallback?)` | Retrieves item from sessionStorage with automatic JSON parsing              |
+| `setSessionStorage(key, value)`     | Stores item in sessionStorage with automatic JSON serialization             |
+| `removeSessionStorage(key)`         | Removes item from sessionStorage                                            |
+| `clearSessionStorage()`             | Clears all items from sessionStorage                                        |
+
+---
+
 ### 🧱 DOM (`dom`)
 
-Simplified element creation, async/outside event handling, clipboard operations, element waiting, and placement.
+Simplified element creation, async/outside event handling, clipboard operations, viewport detection, layout-shift-free scroll lock, and fullscreen.
 
 | Function                                                 | Description                                                                                            |
 | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
@@ -92,43 +116,31 @@ Simplified element creation, async/outside event handling, clipboard operations,
 | `copyToClipboard(text)`                                  | Copies text to clipboard via Clipboard API with legacy fallback                                        |
 | `fireEvent(element, eventName, detail)`                  | Dispatches a custom or native DOM event                                                                |
 | `getElementOffset(element)`                              | Computes top, left, width, and height offsets relative to viewport/document                            |
+| `isInViewport(element, offset?)`                         | Checks if an element is currently within the visible viewport                                          |
+| `toggleFullscreen(element?)`                             | Toggles native fullscreen mode for an element or document root                                         |
+| `toggleFullscreenWithFallback(element?, options?)`       | Toggles fullscreen with CSS pseudo-fullscreen fallback for iOS Safari and unsupported browsers        |
 | `waitForElement(selector, timeout?, parent?)`            | Waits for an element to appear in the DOM using `MutationObserver`                                     |
-
-#### `createElement` Example
-
-```typescript
-import { createElement } from 'tool-shack';
-
-const button = createElement<HTMLButtonElement>('button', {
-  className: 'btn primary',
-  style: { backgroundColor: '#0070f3', color: '#fff' },
-  aria: { label: 'Submit form' },
-  dataset: { action: 'submit' },
-  listeners: {
-    click: () => console.log('Clicked!'),
-  },
-  children: ['Click Me'],
-});
-
-document.body.appendChild(button);
-```
 
 ---
 
 ### 🔤 String (`string`)
 
-Case conversions, string transformations, formatting, escaping, and random string generators.
+Case conversions, string transformations, formatting, escaping, masking, and random string generators.
 
 | Function                                | Description                                                               |
 | --------------------------------------- | ------------------------------------------------------------------------- |
 | `camelCase(value)`                      | Converts string to `camelCase`                                            |
 | `capitalize(value)`                     | Capitalizes the first character of a string                               |
+| `decodeBase64(value)`                   | Safely decodes a Base64 string to a Unicode string                        |
+| `encodeBase64(value)`                   | Safely encodes a Unicode string to a Base64 string                        |
 | `kebabCase(value)`                      | Converts string to `kebab-case`                                           |
 | `pascalCase(value)`                     | Converts string to `PascalCase`                                           |
 | `snakeCase(value)`                      | Converts string to `snake_case`                                           |
 | `slugify(value, separator?)`            | Converts text into URL-safe slug with diacritics removal (default `-`)    |
 | `removeDiacritics(value)`               | Strips accent marks and diacritics from text                              |
 | `truncate(value, length, suffix?)`      | Truncates a string to a given length and appends a suffix (default `...`) |
+| `mask(value, options?)`                 | Masks sensitive string characters (e.g. for card numbers or tokens)       |
+| `formatBytes(bytes, decimals?)`         | Formats byte number into readable string (`'1.5 MB'`, `'2 KB'`)           |
 | `escapeHTML(value)`                     | Escapes HTML entities (`&`, `<`, `>`, `"`, `'`)                           |
 | `unescapeHTML(value)`                   | Unescapes HTML entities back to plain text                                |
 | `byteSize(value)`                       | Calculates the byte length of a string in UTF-8                           |
@@ -139,21 +151,26 @@ Case conversions, string transformations, formatting, escaping, and random strin
 
 ### ⏱️ Date & Time (`dateTime`)
 
-Date formatting and duration parsing.
+Date formatting, duration parsing, relative time, and calendar day comparison.
 
 | Function                      | Description                                                                     |
 | ----------------------------- | ------------------------------------------------------------------------------- |
 | `parseDuration(durationInMs)` | Breaks down milliseconds into `{ days, hours, minutes, seconds, milliseconds }` |
 | `dateAsIso(date?)`            | Formats a Date object as an ISO string (`YYYY-MM-DDTHH:mm:ss.sssZ`)             |
+| `timeAgo(date, locale?)`      | Formats a date into a human-readable relative string (`'5 minutes ago'`)        |
+| `isSameDay(date1, date2)`     | Checks if two dates fall on the same calendar day                               |
 
 ---
 
 ### ⚙️ General (`general`)
 
-Array grouping & chunking, number clamping, value safety checks, and JSON validation.
+Array deduplication, picking, grouping & chunking, deep equality, number clamping, value safety checks, and JSON validation.
 
 | Function                 | Description                                             |
 | ------------------------ | ------------------------------------------------------- |
+| `pick(object, keys)`     | Creates object composed of picked object properties     |
+| `unique(array, keyFn?)`  | Deduplicates array items by reference or key callback   |
+| `isEqual(a, b)`          | Performs deep structural comparison between two values  |
 | `clamp(value, min, max)` | Constrains a number between min and max boundaries      |
 | `groupBy(array, keyFn)`  | Groups array elements into an object by key             |
 | `chunk(array, size?)`    | Splits array into chunks of specified size              |

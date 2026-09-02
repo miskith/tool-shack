@@ -8,6 +8,9 @@ import {
   copyToClipboard,
   fireEvent,
   getElementOffset,
+  isInViewport,
+  toggleFullscreen,
+  toggleFullscreenWithFallback,
   waitForElement,
 } from '../src/dom/index.js';
 
@@ -143,6 +146,126 @@ describe('dom utilities', () => {
       const offset = getElementOffset(el);
       expect(offset.top).toBe(50);
       expect(offset.left).toBe(30);
+    });
+  });
+
+  describe('isInViewport', () => {
+    it('detects whether element is inside visible viewport', () => {
+      const el = document.createElement('div');
+      Object.defineProperty(window, 'innerHeight', { value: 800, configurable: true });
+      Object.defineProperty(window, 'innerWidth', { value: 1200, configurable: true });
+
+      vi.spyOn(el, 'getBoundingClientRect').mockReturnValue({
+        top: 100,
+        bottom: 200,
+        left: 50,
+        right: 150,
+        width: 100,
+        height: 100,
+        x: 50,
+        y: 100,
+        toJSON: () => {},
+      });
+      expect(isInViewport(el)).toBe(true);
+
+      vi.spyOn(el, 'getBoundingClientRect').mockReturnValue({
+        top: 1000,
+        bottom: 1100,
+        left: 50,
+        right: 150,
+        width: 100,
+        height: 100,
+        x: 50,
+        y: 1000,
+        toJSON: () => {},
+      });
+      expect(isInViewport(el)).toBe(false);
+      expect(isInViewport(el, 300)).toBe(true);
+    });
+  });
+
+  describe('toggleFullscreen', () => {
+    it('requests and exits fullscreen mode', async () => {
+      const el = document.createElement('div');
+      el.requestFullscreen = vi.fn().mockResolvedValue(undefined);
+      document.exitFullscreen = vi.fn().mockResolvedValue(undefined);
+
+      // Enter fullscreen
+      Object.defineProperty(document, 'fullscreenElement', {
+        value: null,
+        writable: true,
+        configurable: true,
+      });
+      await toggleFullscreen(el);
+      expect(el.requestFullscreen).toHaveBeenCalledTimes(1);
+
+      // Exit fullscreen
+      Object.defineProperty(document, 'fullscreenElement', {
+        value: el,
+        writable: true,
+        configurable: true,
+      });
+      await toggleFullscreen(el);
+      expect(document.exitFullscreen).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('toggleFullscreenWithFallback', () => {
+    it('uses native fullscreen when supported', async () => {
+      const el = document.createElement('div');
+      el.requestFullscreen = vi.fn().mockResolvedValue(undefined);
+      document.exitFullscreen = vi.fn().mockResolvedValue(undefined);
+
+      Object.defineProperty(document, 'fullscreenElement', {
+        value: null,
+        writable: true,
+        configurable: true,
+      });
+
+      const entered = await toggleFullscreenWithFallback(el);
+      expect(entered).toBe(true);
+      expect(el.requestFullscreen).toHaveBeenCalledTimes(1);
+
+      Object.defineProperty(document, 'fullscreenElement', {
+        value: el,
+        writable: true,
+        configurable: true,
+      });
+
+      const exited = await toggleFullscreenWithFallback(el);
+      expect(exited).toBe(false);
+      expect(document.exitFullscreen).toHaveBeenCalledTimes(1);
+    });
+
+    it('falls back to fixed CSS pseudo-fullscreen when native API is missing', async () => {
+      const el = document.createElement('div');
+      // No requestFullscreen on element (simulating iOS Safari)
+      // @ts-expect-error simulate unsupported
+      el.requestFullscreen = undefined;
+
+      const entered = await toggleFullscreenWithFallback(el, { zIndex: 10000 });
+      expect(entered).toBe(true);
+      expect(el.style.position).toBe('fixed');
+      expect(el.style.width).toBe('100vw');
+      expect(el.style.height).toBe('100vh');
+      expect(el.style.zIndex).toBe('10000');
+
+      const exited = await toggleFullscreenWithFallback(el);
+      expect(exited).toBe(false);
+      expect(el.style.position).toBe('');
+      expect(el.style.zIndex).toBe('');
+    });
+
+    it('supports custom CSS class for pseudo-fullscreen fallback', async () => {
+      const el = document.createElement('div');
+      // @ts-expect-error simulate unsupported
+      el.requestFullscreen = undefined;
+
+      await toggleFullscreenWithFallback(el, { className: 'is-fullscreen-custom' });
+      expect(el.classList.contains('is-fullscreen-custom')).toBe(true);
+
+      await toggleFullscreenWithFallback(el, { className: 'is-fullscreen-custom' });
+      expect(el.classList.contains('is-fullscreen-custom')).toBe(false);
     });
   });
 

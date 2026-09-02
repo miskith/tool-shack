@@ -1,6 +1,7 @@
 export * from './interfaces/index.js';
 
 export * from './deleteCookie.js';
+export * from './detectOS.js';
 export * from './downloadFile.js';
 export * from './getCookie.js';
 export * from './getQueryParams.js';

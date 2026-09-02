@@ -1,8 +1,14 @@
+export * from './interfaces/index.js';
+
 export * from './byteSize.js';
 export * from './camelCase.js';
 export * from './capitalize.js';
+export * from './decodeBase64.js';
+export * from './encodeBase64.js';
 export * from './escapeHTML.js';
+export * from './formatBytes.js';
 export * from './kebabCase.js';
+export * from './mask.js';
 export * from './pascalCase.js';
 export * from './randomCryptoString.js';
 export * from './randomString.js';

@@ -3,8 +3,12 @@ import {
   byteSize,
   camelCase,
   capitalize,
+  decodeBase64,
+  encodeBase64,
   escapeHTML,
+  formatBytes,
   kebabCase,
+  mask,
   pascalCase,
   randomCryptoString,
   randomString,
@@ -200,6 +204,40 @@ describe('string utilities', () => {
     });
   });
 
+  describe('formatBytes', () => {
+    it('formats bytes into readable size representation', () => {
+      expect(formatBytes(0)).toBe('0 Bytes');
+      expect(formatBytes(-100)).toBe('0 Bytes');
+      expect(formatBytes(NaN)).toBe('0 Bytes');
+      expect(formatBytes(500)).toBe('500 Bytes');
+      expect(formatBytes(1024)).toBe('1 KB');
+      expect(formatBytes(1536)).toBe('1.5 KB');
+      expect(formatBytes(1048576)).toBe('1 MB');
+      expect(formatBytes(1073741824)).toBe('1 GB');
+      expect(formatBytes(1099511627776)).toBe('1 TB');
+    });
+
+    it('supports custom decimal precision', () => {
+      expect(formatBytes(1536, 0)).toBe('2 KB');
+      expect(formatBytes(1536, 3)).toBe('1.5 KB');
+    });
+  });
+
+  describe('mask', () => {
+    it('masks sensitive parts of strings', () => {
+      expect(mask('4111123456789012', { visibleStart: 4, visibleEnd: 4 })).toBe('4111********9012');
+      expect(mask('secretpassword', { visibleStart: 2 })).toBe('se************');
+      expect(mask('secretpassword', { visibleEnd: 3 })).toBe('***********ord');
+      expect(mask('secret', { visibleStart: 1, visibleEnd: 1, maskChar: '#' })).toBe('s####t');
+    });
+
+    it('handles edge cases (empty string, short strings)', () => {
+      expect(mask('')).toBe('');
+      expect(mask('abc', { visibleStart: 2, visibleEnd: 2 })).toBe('abc');
+      expect(mask('secret')).toBe('******');
+    });
+  });
+
   describe('randomString & randomCryptoString', () => {
     it('generates random strings of specified length', () => {
       const s1 = randomString(10);
@@ -233,6 +271,27 @@ describe('string utilities', () => {
       expect(longRandom).toHaveLength(500);
       const longCrypto = randomCryptoString(500);
       expect(longCrypto).toHaveLength(500);
+    });
+  });
+
+  describe('encodeBase64 & decodeBase64', () => {
+    it('encodes and decodes ASCII and Unicode strings safely', () => {
+      const ascii = 'Hello World 123!';
+      const encodedAscii = encodeBase64(ascii);
+      expect(encodedAscii).toBe(btoa(ascii));
+      expect(decodeBase64(encodedAscii)).toBe(ascii);
+
+      const unicode = 'Příliš žluťoučký kůň 🚀 你好!';
+      const encodedUnicode = encodeBase64(unicode);
+      expect(decodeBase64(encodedUnicode)).toBe(unicode);
+    });
+
+    it('handles empty strings and special characters', () => {
+      expect(encodeBase64('')).toBe('');
+      expect(decodeBase64('')).toBe('');
+      expect(decodeBase64(encodeBase64('{"valid": true, "count": 42}'))).toBe(
+        '{"valid": true, "count": 42}',
+      );
     });
   });
 });
