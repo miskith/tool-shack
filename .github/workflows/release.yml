@@ -122,11 +122,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Test
+        run: pnpm test
+
       - name: Build
         run: pnpm build
-
-      # - name: Test
-      #   run: pnpm test
 
       - name: Create tag
         run: git tag -a "v${VERSION}" -m "Release v${VERSION}"

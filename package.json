@@ -35,6 +35,8 @@
     "build:cjs": "tsc -p tsconfig.cjs.json",
     "format": "pretty-quick",
     "generate-docs": "rm -rf docs && typedoc --name \"Tool-Shack\" --readme README.md src/*/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "clean": "rm -rf dist",
     "prepare": "husky"
   },
