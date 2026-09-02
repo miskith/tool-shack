@@ -39,11 +39,13 @@
     "prepare": "husky"
   },
   "devDependencies": {
+    "happy-dom": "^20.12.2",
     "husky": "^9.1.7",
     "prettier": "^3.9.6",
     "pretty-quick": "^4.2.2",
     "tslib": "^2.8.1",
     "typedoc": "^0.28.20",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.11"
   }
 }
