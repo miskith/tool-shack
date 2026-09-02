@@ -8,8 +8,9 @@ on:
         required: true
         type: string
       changelog:
-        description: "Release notes (use ';' to separate lines)"
-        required: true
+        description: "Release notes (use ';' to separate lines, or leave empty for auto-generated notes)"
+        required: false
+        default: ''
         type: string
       dry_run:
         description: 'Skip publish to npm'
@@ -41,18 +42,19 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 20
-          registry-url: 'https://registry.npmjs.org/'
-          always-auth: true
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 9
           run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: 'https://registry.npmjs.org/'
+          always-auth: true
+          cache: 'pnpm'
 
       - name: Configure Git user (bot)
         run: |
@@ -90,6 +92,13 @@ jobs:
           echo "name=$(grep '^name=' pkg.txt | cut -d= -f2-)" >> $GITHUB_OUTPUT
           echo "current=$(grep '^current=' pkg.txt | cut -d= -f2-)" >> $GITHUB_OUTPUT
 
+      - name: Fail if git tag already exists
+        run: |
+          if git rev-parse "v${VERSION}" >/dev/null 2>&1; then
+            echo "::error::Tag v${VERSION} already exists."
+            exit 1
+          fi
+
       - name: Fail if target version already on npm
         if: env.DRY_RUN == 'false'
         run: |
@@ -110,6 +119,15 @@ jobs:
           git add package.json pnpm-lock.yaml 2>/dev/null || true
           git commit -m "chore(release): v${VERSION}"
 
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      # - name: Test
+      #   run: pnpm test
+
       - name: Create tag
         run: git tag -a "v${VERSION}" -m "Release v${VERSION}"
 
@@ -119,15 +137,6 @@ jobs:
         run: |
           git push origin HEAD
           git push origin "v${VERSION}"
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build
-        run: pnpm build
-
-      # - name: Test
-      #   run: pnpm test
 
       # Compute previous tag + compare URL (works if first release too)
       - name: Compute compare link
@@ -167,9 +176,17 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
+          EXTRA_FLAGS=""
+          if [[ "${VERSION}" == *"-"* ]]; then
+            EXTRA_FLAGS="--prerelease"
+          fi
+          if [ -z "${CHANGELOG_BODY}" ]; then
+            EXTRA_FLAGS="${EXTRA_FLAGS} --generate-notes"
+          fi
           gh release create "v${VERSION}" \
             --title "v${VERSION}" \
-            --notes-file "${{ steps.notes.outputs.notes_file }}"
+            --notes-file "${{ steps.notes.outputs.notes_file }}" \
+            ${EXTRA_FLAGS}
 
       - name: Configure npm auth
         if: env.DRY_RUN == 'false'
@@ -190,7 +207,12 @@ jobs:
 
           echo "Git status before publish:"; git status --porcelain || true
 
-          pnpm publish --provenance --access public --no-git-checks
+          TAG_FLAG=""
+          if [[ "${VERSION}" == *"-"* ]]; then
+            TAG_FLAG="--tag next"
+          fi
+
+          pnpm publish --provenance --access public --no-git-checks ${TAG_FLAG}
 
       - name: Summary
         if: always()
@@ -200,3 +222,14 @@ jobs:
           echo "Prev tag: ${{ steps.diff.outputs.prev_tag }}"
           echo "Diff: ${{ steps.diff.outputs.compare_url }}"
           echo "Dry run: ${DRY_RUN}"
+          {
+            echo "### 🚀 Release v${VERSION} Summary"
+            echo ""
+            echo "| Property | Value |"
+            echo "|---|---|"
+            echo "| **Package** | \`${{ steps.pkg.outputs.name }}\` |"
+            echo "| **Version** | \`v${VERSION}\` |"
+            echo "| **Previous Tag** | \`${{ steps.diff.outputs.prev_tag }}\` |"
+            echo "| **Diff** | [Compare Changes](${{ steps.diff.outputs.compare_url }}) |"
+            echo "| **Dry Run** | \`${DRY_RUN}\` |"
+          } >> $GITHUB_STEP_SUMMARY
