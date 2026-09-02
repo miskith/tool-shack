@@ -1,6 +1,6 @@
 {
   "name": "tool-shack",
-  "version": "0.0.41",
+  "version": "0.0.42",
   "description": "Collection of usefull functions to ease work",
   "author": {
     "name": "David Myška",
@@ -10,7 +10,7 @@
   "bugs": {
     "url": "https://github.com/miskith/tool-shack/issues"
   },
-  "homepage": "https://www.davidmyska.com/tool-shack/",
+  "homepage": "https://storage.davidmyska.com/tool-shack/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/miskith/tool-shack.git"
