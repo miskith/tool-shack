@@ -101,9 +101,11 @@ jobs:
           fi
 
       - name: Bump version in package.json (no tag yet)
+        if: steps.pkg.outputs.current != env.VERSION
         run: pnpm version "${VERSION}" --no-git-tag-version
 
       - name: Commit version bump
+        if: steps.pkg.outputs.current != env.VERSION
         run: |
           git add package.json pnpm-lock.yaml 2>/dev/null || true
           git commit -m "chore(release): v${VERSION}"
