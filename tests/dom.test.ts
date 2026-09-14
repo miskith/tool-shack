@@ -292,6 +292,21 @@ describe('dom utilities', () => {
       const result = await copyToClipboard('fallback copy');
       expect(result).toBe(true);
       expect(document.execCommand).toHaveBeenCalledWith('copy');
+      expect(document.body.querySelector('textarea')).toBeNull();
+    });
+
+    it('removes the fallback textarea if copying throws', async () => {
+      Object.defineProperty(navigator, 'clipboard', {
+        value: undefined,
+        configurable: true,
+      });
+      document.execCommand = vi.fn().mockImplementation(() => {
+        throw new Error('copy failed');
+      });
+
+      const result = await copyToClipboard('fallback copy');
+      expect(result).toBe(false);
+      expect(document.body.querySelector('textarea')).toBeNull();
     });
   });
 

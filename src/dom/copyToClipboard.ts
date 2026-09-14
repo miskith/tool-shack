@@ -21,11 +21,14 @@ export const copyToClipboard = async (text: string): Promise<boolean> => {
     tempTextarea.style.opacity = '0';
     tempTextarea.style.pointerEvents = 'none';
     document.body.appendChild(tempTextarea);
-    tempTextarea.focus();
-    tempTextarea.select();
-    const success = document.execCommand('copy');
-    document.body.removeChild(tempTextarea);
-    return success;
+
+    try {
+      tempTextarea.focus();
+      tempTextarea.select();
+      return document.execCommand('copy');
+    } finally {
+      document.body.removeChild(tempTextarea);
+    }
   } catch {
     return false;
   }
