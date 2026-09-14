@@ -122,6 +122,19 @@ describe('general utilities', () => {
       const parity = groupBy(numbers, (n) => (n % 2 === 0 ? 'even' : 'odd'));
       expect(parity.even).toEqual([2, 4, 6]);
       expect(parity.odd).toEqual([1, 3, 5]);
+
+      const byValue = groupBy(numbers, (n) => n);
+      expect(byValue[1]).toEqual([1]);
+      expect(byValue[2]).toEqual([2]);
+    });
+
+    it('groups by prototype-colliding keys and symbols', () => {
+      expect(groupBy(['a', 'b'], () => '__proto__')['__proto__']).toEqual(['a', 'b']);
+      expect(groupBy(['a', 'b'], () => 'constructor').constructor).toEqual(['a', 'b']);
+      expect(groupBy(['a', 'b'], () => 'toString').toString).toEqual(['a', 'b']);
+
+      const role = Symbol('role');
+      expect(groupBy(['x', 'y'], () => role)[role]).toEqual(['x', 'y']);
     });
   });
 

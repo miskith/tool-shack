@@ -9,7 +9,7 @@ export const groupBy = <T, K extends string | number | symbol>(
   array: T[],
   keyFn: (item: T, index: number) => K,
 ): Record<K, T[]> => {
-  const result = {} as Record<K, T[]>;
+  const result = Object.create(null) as Record<K, T[]>;
 
   array.forEach((item, index) => {
     const key = keyFn(item, index);
