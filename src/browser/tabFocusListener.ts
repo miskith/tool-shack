@@ -5,14 +5,23 @@ import { isTabFocused } from './isTabFocused.js';
  *
  * @param focusCallback Function to be called when current browser tab goes into focus
  * @param blurCallback Function to be called when current browser tab goes out of focus
- * @returns void
+ * @returns Cleanup function to remove the listener
  */
-export const tabFocusListener = (focusCallback?: () => void, blurCallback?: () => void): void => {
-  document.addEventListener('visibilitychange', () => {
+export const tabFocusListener = (
+  focusCallback?: () => void,
+  blurCallback?: () => void,
+): (() => void) => {
+  const handleVisibilityChange = (): void => {
     if (isTabFocused()) {
-      focusCallback?.call(this);
+      focusCallback?.();
     } else {
-      blurCallback?.call(this);
+      blurCallback?.();
     }
-  });
+  };
+
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+
+  return () => {
+    document.removeEventListener('visibilitychange', handleVisibilityChange);
+  };
 };

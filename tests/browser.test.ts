@@ -107,10 +107,15 @@ describe('browser utilities', () => {
       const focusCb = vi.fn();
       const blurCb = vi.fn();
 
-      tabFocusListener(focusCb, blurCb);
+      const cleanup = tabFocusListener(focusCb, blurCb);
 
       document.dispatchEvent(new Event('visibilitychange'));
-      expect(focusCb).toHaveBeenCalled();
+      expect(focusCb).toHaveBeenCalledTimes(1);
+
+      cleanup();
+      cleanup();
+      document.dispatchEvent(new Event('visibilitychange'));
+      expect(focusCb).toHaveBeenCalledTimes(1);
     });
   });
 

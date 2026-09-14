@@ -3,17 +3,23 @@
  *
  * @param element Node element outside which to listen to clicks
  * @param callback Function to trigger when clicked outside
- * @returns void
+ * @returns Cleanup function to remove the listener
  */
 export const addClickOutsideListener = (
   element: HTMLElement,
   callback: (event?: Event) => void,
-): void => {
-  document.addEventListener('click', (event: Event) => {
+): (() => void) => {
+  const handleClick = (event: Event): void => {
     const target = event.target as HTMLElement;
 
     if (!!target && !element.contains(target)) {
-      callback.call(this, event);
+      callback(event);
     }
-  });
+  };
+
+  document.addEventListener('click', handleClick);
+
+  return () => {
+    document.removeEventListener('click', handleClick);
+  };
 };

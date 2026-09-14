@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import {
   createElement,
   addEventListener,
+  addAsyncEventListener,
   addClickOutsideListener,
   appendBefore,
   appendAfter,
@@ -82,7 +83,7 @@ describe('dom utilities', () => {
       document.body.appendChild(parent);
 
       const callback = vi.fn();
-      addClickOutsideListener(target, callback);
+      const cleanup = addClickOutsideListener(target, callback);
 
       // Click inside
       target.dispatchEvent(new MouseEvent('click', { bubbles: true }));
@@ -92,6 +93,54 @@ describe('dom utilities', () => {
       outside.dispatchEvent(new MouseEvent('click', { bubbles: true }));
       expect(callback).toHaveBeenCalledTimes(1);
 
+      cleanup();
+      cleanup();
+      outside.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      expect(callback).toHaveBeenCalledTimes(1);
+
+      document.body.removeChild(parent);
+    });
+  });
+
+  describe('addAsyncEventListener', () => {
+    it('delegates bubbling events to matching elements and can be removed', () => {
+      const parent = document.createElement('div');
+      parent.className = 'delegate-root';
+      const child = document.createElement('button');
+      parent.appendChild(child);
+      document.body.appendChild(parent);
+
+      const bubbling = vi.fn();
+      const cleanup = addAsyncEventListener('.delegate-root', { click: bubbling });
+
+      child.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      expect(bubbling).toHaveBeenCalledTimes(1);
+
+      cleanup();
+      cleanup();
+      child.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      expect(bubbling).toHaveBeenCalledTimes(1);
+
+      document.body.removeChild(parent);
+    });
+
+    it('ignores bubbled events when acceptBubbling is false', () => {
+      const parent = document.createElement('div');
+      parent.className = 'direct-root';
+      const child = document.createElement('button');
+      parent.appendChild(child);
+      document.body.appendChild(parent);
+
+      const direct = vi.fn();
+      const cleanup = addAsyncEventListener('.direct-root', { click: direct }, false);
+
+      child.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      expect(direct).not.toHaveBeenCalled();
+
+      parent.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      expect(direct).toHaveBeenCalledTimes(1);
+
+      cleanup();
       document.body.removeChild(parent);
     });
   });
