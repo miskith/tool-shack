@@ -90,6 +90,14 @@ describe('string utilities', () => {
       expect(slugify('Hello World', '_')).toBe('hello_world');
     });
 
+    it('treats custom separators as literal regex characters', () => {
+      expect(slugify('Hello World!', '.')).toBe('hello.world');
+      expect(slugify('Hello World!', '^')).toBe('hello^world');
+      expect(slugify('Hello World!', ']')).toBe('hello]world');
+      expect(slugify('Hello World!', '\\')).toBe('hello\\world');
+      expect(slugify('Hello World!', '-')).toBe('hello-world');
+    });
+
     it('handles edge cases (empty strings, emojis, special characters)', () => {
       expect(slugify('')).toBe('');
       expect(slugify('   ')).toBe('');
