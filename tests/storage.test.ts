@@ -52,6 +52,31 @@ describe('storage utilities', () => {
         complexData,
       );
     });
+
+    it('rejects top-level values that JSON.stringify does not serialize', () => {
+      expect(setLocalStorage('ok_string', 'hello')).toBe(true);
+      expect(getLocalStorage('ok_string')).toBe('hello');
+
+      expect(setLocalStorage('ok_object', { a: 1 })).toBe(true);
+      expect(getLocalStorage('ok_object')).toEqual({ a: 1 });
+
+      expect(setLocalStorage('ok_null', null)).toBe(true);
+      expect(localStorage.getItem('ok_null')).toBe('null');
+      expect(getLocalStorage('ok_null')).toBeNull();
+
+      expect(setLocalStorage('bad_undefined', undefined)).toBe(false);
+      expect(localStorage.getItem('bad_undefined')).toBeNull();
+
+      expect(setLocalStorage('bad_fn', () => 'nope')).toBe(false);
+      expect(localStorage.getItem('bad_fn')).toBeNull();
+
+      expect(setLocalStorage('bad_symbol', Symbol('x'))).toBe(false);
+      expect(localStorage.getItem('bad_symbol')).toBeNull();
+
+      expect(setLocalStorage('keep', 'kept')).toBe(true);
+      expect(setLocalStorage('keep', undefined)).toBe(false);
+      expect(getLocalStorage('keep')).toBe('kept');
+    });
   });
 
   describe('sessionStorage', () => {
@@ -75,6 +100,31 @@ describe('storage utilities', () => {
       expect(getSessionStorage<typeof secret>('secret_auth', null, { encode: true })).toEqual(
         secret,
       );
+    });
+
+    it('rejects top-level values that JSON.stringify does not serialize', () => {
+      expect(setSessionStorage('ok_number', 0)).toBe(true);
+      expect(getSessionStorage('ok_number')).toBe(0);
+
+      expect(setSessionStorage('ok_object', { a: 1 })).toBe(true);
+      expect(getSessionStorage('ok_object')).toEqual({ a: 1 });
+
+      expect(setSessionStorage('ok_null', null)).toBe(true);
+      expect(sessionStorage.getItem('ok_null')).toBe('null');
+      expect(getSessionStorage('ok_null')).toBeNull();
+
+      expect(setSessionStorage('bad_undefined', undefined)).toBe(false);
+      expect(sessionStorage.getItem('bad_undefined')).toBeNull();
+
+      expect(setSessionStorage('bad_fn', () => 'nope')).toBe(false);
+      expect(sessionStorage.getItem('bad_fn')).toBeNull();
+
+      expect(setSessionStorage('bad_symbol', Symbol('x'))).toBe(false);
+      expect(sessionStorage.getItem('bad_symbol')).toBeNull();
+
+      expect(setSessionStorage('keep', 'kept')).toBe(true);
+      expect(setSessionStorage('keep', undefined)).toBe(false);
+      expect(getSessionStorage('keep')).toBe('kept');
     });
   });
 });

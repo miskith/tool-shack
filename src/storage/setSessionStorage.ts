@@ -7,7 +7,7 @@ import { encodeBase64 } from '../string/index.js';
  * @param key Storage key
  * @param value Value to store
  * @param options Storage options including optional Base64 encoding
- * @returns Boolean indicating whether operation succeeded
+ * @returns Whether a JSON-serializable payload was stored
  */
 export const setSessionStorage = <T>(key: string, value: T, options?: IStorageOptions): boolean => {
   try {
@@ -15,6 +15,9 @@ export const setSessionStorage = <T>(key: string, value: T, options?: IStorageOp
       return false;
     }
     const json = JSON.stringify(value);
+    if (json === undefined) {
+      return false;
+    }
     const payload = options?.encode ? encodeBase64(json) : json;
     sessionStorage.setItem(key, payload);
     return true;
