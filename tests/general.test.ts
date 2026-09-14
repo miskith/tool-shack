@@ -65,6 +65,17 @@ describe('general utilities', () => {
     it('returns false for functions', () => {
       expect(isEmpty(() => {})).toBe(false);
     });
+
+    it('treats null-prototype objects as dictionaries', () => {
+      expect(isEmpty(Object.create(null))).toBe(true);
+
+      const keyed = Object.create(null) as { a: number };
+      keyed.a = 1;
+      expect(isEmpty(keyed)).toBe(false);
+
+      expect(isEmpty(groupBy([], (item) => item))).toBe(true);
+      expect(isEmpty(groupBy(['a'], () => 'k'))).toBe(false);
+    });
   });
 
   describe('isValidJson', () => {

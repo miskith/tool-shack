@@ -15,6 +15,10 @@ export const isEmpty = (value: unknown): boolean => {
     return value.size === 0;
   }
 
+  if (value !== null && typeof value === 'object' && Object.getPrototypeOf(value) === null) {
+    return !Object.keys(value).length;
+  }
+
   return (
     isNil(value) ||
     (value instanceof Object &&
