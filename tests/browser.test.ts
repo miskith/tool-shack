@@ -159,6 +159,35 @@ describe('browser utilities', () => {
       expect(getCookie('username')).toBeNull();
       expect(getCookie('non_existent_cookie')).toBeNull();
     });
+
+    it('matches dotted cookie names exactly and does not treat names as regex', () => {
+      setCookie('axb', 'wildcard');
+      expect(getCookie('a.b')).toBeNull();
+
+      setCookie('a.b', 'dotted');
+      expect(getCookie('a.b')).toBe('dotted');
+      expect(getCookie('axb')).toBe('wildcard');
+
+      deleteCookie('axb');
+      deleteCookie('a.b');
+    });
+
+    it('looks up encoded names and names containing regex metacharacters exactly', () => {
+      setCookie('user name', 'alice');
+      setCookie('café', 'latte');
+      setCookie('fo', 'oops');
+      setCookie('foo*', 'star');
+
+      expect(getCookie('user name')).toBe('alice');
+      expect(getCookie('café')).toBe('latte');
+      expect(getCookie('foo*')).toBe('star');
+      expect(getCookie('fo')).toBe('oops');
+
+      deleteCookie('user name');
+      deleteCookie('café');
+      deleteCookie('fo');
+      deleteCookie('foo*');
+    });
   });
 
   describe('detectOS', () => {

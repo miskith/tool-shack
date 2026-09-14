@@ -5,7 +5,20 @@
  * @returns Decoded cookie value or null if not found
  */
 export const getCookie = (name: string): string | null => {
-  const match = document.cookie.match(new RegExp(`(?:^|;\\s*)${encodeURIComponent(name)}=([^;]*)`));
+  const encodedName = encodeURIComponent(name);
 
-  return match ? decodeURIComponent(match[1]) : null;
+  for (const part of document.cookie.split(';')) {
+    const entry = part.trim();
+    const separatorIndex = entry.indexOf('=');
+
+    if (separatorIndex === -1) {
+      continue;
+    }
+
+    if (entry.slice(0, separatorIndex) === encodedName) {
+      return decodeURIComponent(entry.slice(separatorIndex + 1));
+    }
+  }
+
+  return null;
 };
