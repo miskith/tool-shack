@@ -119,6 +119,15 @@ describe('browser utilities', () => {
       expect(getQueryParams('https://example.com')).toEqual({});
       expect(getQueryParams('')).toEqual({});
     });
+
+    it('never treats hash content as search params', () => {
+      expect(getQueryParams('https://example.com/path#section?fake=value')).toEqual({});
+      expect(getQueryParams('https://example.com/path?foo=bar#section')).toEqual({ foo: 'bar' });
+    });
+
+    it('returns an empty object for invalid URLs', () => {
+      expect(getQueryParams('http://[')).toEqual({});
+    });
   });
 
   describe('networkStatusListener', () => {
