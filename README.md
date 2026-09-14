@@ -73,24 +73,24 @@ console.log(isValidJson('{"valid": true}')); // true
 
 Utilities for feature detection, device capabilities, cookies, downloads, URL parameters, and tab focus.
 
-| Function                                     | Description                                                           |
-| -------------------------------------------- | --------------------------------------------------------------------- |
-| `detectOS()`                                 | Detects user operating system (`'ios'`, `'android'`, `'macos'`, etc.) |
-| `isTouchSupported()`                         | Checks if the current device/browser supports touch events            |
-| `isPushNotificationSupported()`              | Checks if Push Notifications and Service Workers are supported        |
-| `isScrollBehaviorSupported()`                | Checks if native smooth scroll behavior is supported                  |
-| `isShareSupported()`                         | Checks if the Web Share API (`navigator.share`) is supported          |
-| `isTabFocused()`                             | Checks whether the browser tab currently has focus                    |
-| `tabFocusListener(onFocus, onBlur)`          | Subscribes callbacks for window/tab focus and blur events             |
-| `preferColorScheme()`                        | Detects user color scheme preference (`'dark'`, `'light'`, or `null`) |
-| `scrollToElement(element, options)`          | Smoothly scrolls the window or container to a target element          |
-| `scrollToPosition(options)`                  | Smoothly scrolls to specific x/y coordinates                          |
-| `downloadFile(data, filename, mimeType?)`    | Programmatically triggers file download in the browser                |
-| `getQueryParams(url?)`                       | Extracts URL search query parameters into a key-value object          |
-| `networkStatusListener(onOnline, onOffline)` | Subscribes to browser online/offline events with cleanup handle       |
-| `getCookie(name)`                            | Retrieves and decodes a cookie value by name                          |
-| `setCookie(name, value, options?)`           | Sets a browser cookie with days, path, domain, secure, and sameSite   |
-| `deleteCookie(name, options?)`               | Deletes a browser cookie by name                                      |
+| Function                                     | Description                                                             |
+| -------------------------------------------- | ----------------------------------------------------------------------- |
+| `detectOS()`                                 | Detects user operating system (`'ios'`, `'android'`, `'macos'`, etc.)   |
+| `isTouchSupported()`                         | Checks if the current device/browser supports touch events              |
+| `isPushNotificationSupported()`              | Checks Web Push support (Notification, Service Worker, and PushManager) |
+| `isScrollBehaviorSupported()`                | Checks if native smooth scroll behavior is supported                    |
+| `isShareSupported()`                         | Checks if the Web Share API (`navigator.share`) is supported            |
+| `isTabFocused()`                             | Checks whether the browser tab currently has focus                      |
+| `tabFocusListener(onFocus, onBlur)`          | Subscribes callbacks for window/tab focus and blur events               |
+| `preferColorScheme()`                        | Detects user color scheme preference (`'dark'`, `'light'`, or `null`)   |
+| `scrollToElement(element, options)`          | Smoothly scrolls the window or container to a target element            |
+| `scrollToPosition(options)`                  | Smoothly scrolls to specific x/y coordinates                            |
+| `downloadFile(data, filename, mimeType?)`    | Programmatically triggers file download in the browser                  |
+| `getQueryParams(url?)`                       | Extracts URL search query parameters into a key-value object            |
+| `networkStatusListener(onOnline, onOffline)` | Subscribes to browser online/offline events with cleanup handle         |
+| `getCookie(name)`                            | Retrieves and decodes a cookie value by name                            |
+| `setCookie(name, value, options?)`           | Sets a browser cookie with days, path, domain, secure, and sameSite     |
+| `deleteCookie(name, options?)`               | Deletes a browser cookie by name                                        |
 
 ---
 

@@ -26,8 +26,42 @@ describe('browser utilities', () => {
   });
 
   describe('isPushNotificationSupported', () => {
-    it('returns boolean for push notification support', () => {
-      expect(typeof isPushNotificationSupported()).toBe('boolean');
+    const setSupport = (
+      notification: boolean,
+      serviceWorker: boolean,
+      pushManager: boolean,
+    ): void => {
+      const define = (target: object, key: string, present: boolean): void => {
+        if (present) {
+          Object.defineProperty(target, key, { configurable: true, value: {} });
+        } else {
+          Reflect.deleteProperty(target, key);
+        }
+      };
+
+      define(window, 'Notification', notification);
+      define(navigator, 'serviceWorker', serviceWorker);
+      define(window, 'PushManager', pushManager);
+    };
+
+    it('returns true when Notification, serviceWorker, and PushManager exist', () => {
+      setSupport(true, true, true);
+      expect(isPushNotificationSupported()).toBe(true);
+    });
+
+    it('returns false when Notification is missing', () => {
+      setSupport(false, true, true);
+      expect(isPushNotificationSupported()).toBe(false);
+    });
+
+    it('returns false when serviceWorker is missing', () => {
+      setSupport(true, false, true);
+      expect(isPushNotificationSupported()).toBe(false);
+    });
+
+    it('returns false when PushManager is missing', () => {
+      setSupport(true, true, false);
+      expect(isPushNotificationSupported()).toBe(false);
     });
   });
 

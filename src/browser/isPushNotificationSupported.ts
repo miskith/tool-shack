@@ -1,7 +1,10 @@
 /**
- * Check if user's browser supports push notifications
+ * Check whether the environment supports the Web Push API
  *
- * @returns Boolean indicating if user's browser supports push notifications
+ * Requires Notification, Service Worker, and PushManager. Does not check
+ * permission and does not register a service worker.
+ *
+ * @returns Whether Web Push is supported
  */
 export const isPushNotificationSupported = (): boolean =>
-  !!(window.Notification || 'webkitNotifications' in window);
+  'Notification' in window && 'serviceWorker' in navigator && 'PushManager' in window;
