@@ -7,6 +7,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.0] - 2026-09-15
+
+Hardening release. Several helpers now match their documented contracts more strictly. `isTabFocused` / `tabFocusListener` remain as deprecated aliases.
+
+### Added
+
+- `isPageVisible` and `pageVisibilityListener` (Page Visibility API)
+- Packed-package smoke (`pnpm test:pack`) for ESM, CJS, and types
+- Cleanup return values on `tabFocusListener` / `pageVisibilityListener`, `addClickOutsideListener`, and `addAsyncEventListener`
+
+### Changed
+
+- `escapeHTML` encodes `& < > " '` (`&` first); not a sanitizer
+- `createElement` infers the element type from the tag name; ARIA keys no longer include `disables`
+- `debounce` / `throttle` accept ordinary typed callbacks
+- Dual package: CJS emit is `commonjs` with no `tslib` helper import
+- Releases can only be dispatched from `master`; npm publish happens before the git push
+- README and TypeDoc aligned to the real signatures
+
+### Fixed
+
+- `getCookie` matches the cookie name exactly (not as a regex)
+- `getQueryParams` uses `URL` / `URLSearchParams` and ignores `?` inside the hash
+- `setLocalStorage` / `setSessionStorage` return `false` for non-JSON-serializable values
+- `groupBy` is safe for keys like `__proto__`
+- `isEmpty` handles null-prototype objects
+- `slugify` custom separators are escaped
+- `isPushNotificationSupported` requires Notification, Service Worker, and PushManager
+- Pseudo-fullscreen fallback state is stored in a `WeakMap`, not `data-*` attributes
+- Clipboard fallback always removes the temporary textarea
+- CI runs on `master` and `dev`
+
+### Deprecated
+
+- `isTabFocused` → `isPageVisible`
+- `tabFocusListener` → `pageVisibilityListener`
+
+### Migration
+
+- Prefer the visibility names; old names still work
+- Expect quotes in `escapeHTML` output as `&quot;` / `&#39;`
+- Cookie lookups are exact names only
+- Storage writes of `undefined` / functions / cycles no longer succeed
+- TypeScript: `createElement` generic is the tag name; `debounce`/`throttle` callbacks are invariant
+
 ## [1.0.0] - 2026-09-02
 
 ### Added
