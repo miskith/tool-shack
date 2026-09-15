@@ -10,14 +10,6 @@ const tscBin = join(root, 'node_modules', 'typescript', 'bin', 'tsc');
 const run = (command, args, cwd) =>
   execFileSync(command, args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
 
-const isKnownCjsTopologyFailure = (error) => {
-  const output = `${error.stderr ?? ''}${error.stdout ?? ''}${error.message ?? ''}`;
-  return (
-    output.includes('exports is not defined in ES module scope') ||
-    output.includes('ERR_REQUIRE_ESM')
-  );
-};
-
 const packDir = mkdtempSync(join(tmpdir(), 'tool-shack-pack-'));
 const consumerDir = mkdtempSync(join(tmpdir(), 'tool-shack-consumer-'));
 
@@ -65,16 +57,7 @@ if (clamp(5, 0, 3) !== 3) {
 }
 `,
   );
-  try {
-    run('node', ['cjs-require.cjs'], consumerDir);
-  } catch (error) {
-    if (!isKnownCjsTopologyFailure(error)) {
-      throw error;
-    }
-    console.warn(
-      'CJS require of packed tool-shack failed with the known dual-package topology error (PKG-01). ESM path passed.',
-    );
-  }
+  run('node', ['cjs-require.cjs'], consumerDir);
 
   if (!existsSync(tscBin)) {
     throw new Error('TypeScript binary not found; cannot check packed type resolution');
