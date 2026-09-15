@@ -1,5 +1,10 @@
 name: Release & Publish
 
+# Order: validate → bump → test → local tag → npm publish → push → GitHub release.
+# Failed npm publish: remote git is unchanged; rerun from master.
+# npm succeeded but push failed: rerun skips npm if that version is already published, then pushes tag/release.
+# Dry-run: skips npm only; still tags and creates a GitHub release. Master only.
+
 on:
   workflow_dispatch:
     inputs:
@@ -37,6 +42,13 @@ jobs:
       DRY_RUN: ${{ inputs.dry_run }}
 
     steps:
+      - name: Require master branch
+        run: |
+          if [ "${GITHUB_REF}" != "refs/heads/master" ]; then
+            echo "::error::Releases must run from master (got ${GITHUB_REF})."
+            exit 1
+          fi
+
       - name: Checkout
         uses: actions/checkout@v7
         with:
@@ -98,16 +110,6 @@ jobs:
             exit 1
           fi
 
-      - name: Fail if target version already on npm
-        if: env.DRY_RUN == 'false'
-        run: |
-          PKG="${{ steps.pkg.outputs.name }}"
-          echo "Checking npm for ${PKG}@${VERSION}…"
-          if pnpm view "$PKG@${VERSION}" version > /dev/null 2>&1; then
-            echo "::error::Version ${PKG}@${VERSION} already exists on npm."
-            exit 1
-          fi
-
       - name: Bump version in package.json (no tag yet)
         if: steps.pkg.outputs.current != env.VERSION
         run: pnpm version "${VERSION}" --no-git-tag-version
@@ -132,6 +134,41 @@ jobs:
 
       - name: Create tag
         run: git tag -a "v${VERSION}" -m "Release v${VERSION}"
+
+      - name: Configure npm auth
+        if: env.DRY_RUN == 'false'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc
+
+      - name: Publish to npm
+        id: npm
+        if: env.DRY_RUN == 'false'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          PRIV=$(node -p "require('./package.json').private ? 'true' : 'false'")
+          if [ "$PRIV" = "true" ]; then
+            echo '::error::package.json has "private": true. Aborting publish.'
+            exit 1
+          fi
+
+          PKG="${{ steps.pkg.outputs.name }}"
+          if pnpm view "${PKG}@${VERSION}" version > /dev/null 2>&1; then
+            echo "Already published ${PKG}@${VERSION}; skipping npm publish."
+            echo "result=already" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "Git status before publish:"; git status --porcelain || true
+
+          TAG_FLAG=""
+          if [[ "${VERSION}" == *"-"* ]]; then
+            TAG_FLAG="--tag next"
+          fi
+
+          pnpm publish --provenance --access public --no-git-checks ${TAG_FLAG}
+          echo "result=published" >> "$GITHUB_OUTPUT"
 
       - name: Push commit & tag
         env:
@@ -190,40 +227,24 @@ jobs:
             --notes-file "${{ steps.notes.outputs.notes_file }}" \
             ${EXTRA_FLAGS}
 
-      - name: Configure npm auth
-        if: env.DRY_RUN == 'false'
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc
-
-      - name: Publish to npm
-        if: env.DRY_RUN == 'false'
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          PRIV=$(node -p "require('./package.json').private ? 'true' : 'false'")
-          if [ "$PRIV" = "true" ]; then
-            echo '::error::package.json has "private": true. Aborting publish.'
-            exit 1
-          fi
-
-          echo "Git status before publish:"; git status --porcelain || true
-
-          TAG_FLAG=""
-          if [[ "${VERSION}" == *"-"* ]]; then
-            TAG_FLAG="--tag next"
-          fi
-
-          pnpm publish --provenance --access public --no-git-checks ${TAG_FLAG}
-
       - name: Summary
         if: always()
         run: |
+          if [ "${DRY_RUN}" = "true" ]; then
+            NPM_RESULT="skipped (dry-run)"
+          elif [ "${{ steps.npm.outputs.result }}" = "already" ]; then
+            NPM_RESULT="skipped (already published)"
+          elif [ "${{ steps.npm.outputs.result }}" = "published" ]; then
+            NPM_RESULT="published"
+          else
+            NPM_RESULT="not published"
+          fi
           echo "Released v${VERSION}"
           echo "Package: ${{ steps.pkg.outputs.name }}"
           echo "Prev tag: ${{ steps.diff.outputs.prev_tag }}"
           echo "Diff: ${{ steps.diff.outputs.compare_url }}"
           echo "Dry run: ${DRY_RUN}"
+          echo "npm: ${NPM_RESULT}"
           {
             echo "### 🚀 Release v${VERSION} Summary"
             echo ""
@@ -234,4 +255,7 @@ jobs:
             echo "| **Previous Tag** | \`${{ steps.diff.outputs.prev_tag }}\` |"
             echo "| **Diff** | [Compare Changes](${{ steps.diff.outputs.compare_url }}) |"
             echo "| **Dry Run** | \`${DRY_RUN}\` |"
+            echo "| **npm** | \`${NPM_RESULT}\` |"
+            echo ""
+            echo "Order: local tag → npm publish → push → GitHub release. Failed npm leaves remote git unchanged."
           } >> $GITHUB_STEP_SUMMARY
