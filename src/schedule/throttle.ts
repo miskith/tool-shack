@@ -7,7 +7,7 @@ import type { IThrottledFunction } from './interfaces/throttle.js';
  * @param limit Milliseconds to limit invocations
  * @returns Throttled function with cancel method
  */
-export const throttle = <T extends (...args: unknown[]) => unknown>(
+export const throttle = <T extends (...args: never[]) => unknown>(
   callback: T,
   limit = 300,
 ): IThrottledFunction<T> => {

@@ -72,6 +72,25 @@ describe('schedule utilities', () => {
     });
   });
 
+  describe('debounce and throttle typing', () => {
+    it('accepts ordinary typed callbacks and preserves argument types', () => {
+      const expectType = <T>(_value: T): void => undefined;
+      const callback = (_value: string, _count: number): boolean => true;
+
+      const debounced = debounce(callback);
+      debounced('x', 1);
+      expectType<() => void>(debounced.cancel);
+      // @ts-expect-error -- wrong argument types
+      debounced(123, 'wrong');
+
+      const throttled = throttle(callback);
+      throttled('x', 1);
+      expectType<() => void>(throttled.cancel);
+      // @ts-expect-error -- wrong argument types
+      throttled(123, 'wrong');
+    });
+  });
+
   describe('sleep', () => {
     it('resolves after specified milliseconds', async () => {
       const promise = sleep(500);

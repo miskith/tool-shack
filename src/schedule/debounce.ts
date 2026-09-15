@@ -7,7 +7,7 @@ import type { IDebouncedFunction } from './interfaces/debounce.js';
  * @param delay Milliseconds to delay
  * @returns Debounced function with cancel method
  */
-export const debounce = <T extends (...args: unknown[]) => unknown>(
+export const debounce = <T extends (...args: never[]) => unknown>(
   callback: T,
   delay = 300,
 ): IDebouncedFunction<T> => {
