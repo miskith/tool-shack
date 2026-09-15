@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import {
   deleteCookie,
   detectOS,
@@ -20,8 +20,30 @@ import {
 
 describe('browser utilities', () => {
   describe('isTouchSupported', () => {
-    it('returns boolean for touch support', () => {
-      expect(typeof isTouchSupported()).toBe('boolean');
+    afterEach(() => {
+      Reflect.deleteProperty(window, 'ontouchstart');
+      Reflect.deleteProperty(window, 'DocumentTouch');
+    });
+
+    it('returns true when ontouchstart is on window', () => {
+      Object.defineProperty(window, 'ontouchstart', { configurable: true, value: null });
+      Reflect.deleteProperty(window, 'DocumentTouch');
+      expect(isTouchSupported()).toBe(true);
+    });
+
+    it('returns true when DocumentTouch exists and document is an instance of it', () => {
+      Reflect.deleteProperty(window, 'ontouchstart');
+      Object.defineProperty(window, 'DocumentTouch', {
+        configurable: true,
+        value: document.constructor,
+      });
+      expect(isTouchSupported()).toBe(true);
+    });
+
+    it('returns false when ontouchstart and DocumentTouch are missing', () => {
+      Reflect.deleteProperty(window, 'ontouchstart');
+      Reflect.deleteProperty(window, 'DocumentTouch');
+      expect(isTouchSupported()).toBe(false);
     });
   });
 
@@ -66,14 +88,43 @@ describe('browser utilities', () => {
   });
 
   describe('isScrollBehaviorSupported', () => {
-    it('returns boolean for scroll behavior support', () => {
-      expect(typeof isScrollBehaviorSupported()).toBe('boolean');
+    afterEach(() => {
+      Reflect.deleteProperty(document, 'documentElement');
+    });
+
+    it('returns true when scrollBehavior is in documentElement.style', () => {
+      Object.defineProperty(document, 'documentElement', {
+        configurable: true,
+        value: { style: { scrollBehavior: 'smooth' } },
+      });
+      expect(isScrollBehaviorSupported()).toBe(true);
+    });
+
+    it('returns false when scrollBehavior is missing from documentElement.style', () => {
+      Object.defineProperty(document, 'documentElement', {
+        configurable: true,
+        value: { style: {} },
+      });
+      expect(isScrollBehaviorSupported()).toBe(false);
     });
   });
 
   describe('isShareSupported', () => {
-    it('returns boolean for share support', () => {
-      expect(typeof isShareSupported()).toBe('boolean');
+    afterEach(() => {
+      Reflect.deleteProperty(navigator, 'share');
+    });
+
+    it('returns true when navigator.share is present', () => {
+      Object.defineProperty(navigator, 'share', {
+        configurable: true,
+        value: (): void => undefined,
+      });
+      expect(isShareSupported()).toBe(true);
+    });
+
+    it('returns false when navigator.share is missing', () => {
+      Object.defineProperty(navigator, 'share', { configurable: true, value: undefined });
+      expect(isShareSupported()).toBe(false);
     });
   });
 
