@@ -38,3 +38,6 @@ jobs:
 
       - name: Build
         run: pnpm build
+
+      - name: Packed package smoke
+        run: pnpm test:pack
