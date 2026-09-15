@@ -1,9 +1,4 @@
-import type { IExtendingElementProps } from './interfaces/createElement.js';
-
-type TCreateElementProps<T extends HTMLElement> = Partial<
-  Omit<T, 'children' | 'dataset' | 'style'>
-> &
-  IExtendingElementProps;
+import type { TCreateElementProps } from './types/createElement.js';
 
 /**
  * Method for creating Node element and assigning multiple parameters, event listeners & children in one method call

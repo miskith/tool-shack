@@ -1,4 +1,5 @@
 export * from './interfaces/index.js';
+export * from './types/index.js';
 
 export * from './addAsyncEventListener.js';
 export * from './addClickOutsideListener.js';
