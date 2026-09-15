@@ -2,4 +2,7 @@ packages:
   - '.'
 minimumReleaseAgeExclude:
   - happy-dom@20.12.2
-  - eslint-plugin-jsdoc@64.3.4 || 64.4.0
+  - eslint-plugin-jsdoc@64.3.4 || 64.4.0 || 64.5.0
+  - '@vitest/mocker@5.0.1'
+  - '@vitest/spy@5.0.1'
+  - vitest@5.0.1
