@@ -36,11 +36,17 @@ describe('string utilities', () => {
 
   describe('escapeHTML & unescapeHTML', () => {
     it('escapes HTML special characters', () => {
+      expect(escapeHTML('&')).toBe('&amp;');
+      expect(escapeHTML('<')).toBe('&lt;');
+      expect(escapeHTML('>')).toBe('&gt;');
+      expect(escapeHTML('"')).toBe('&quot;');
+      expect(escapeHTML("'")).toBe('&#39;');
       expect(escapeHTML('<script>alert("xss")</script>')).toBe(
-        '&lt;script&gt;alert("xss")&lt;/script&gt;',
+        '&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;',
       );
       expect(escapeHTML('Tom & Jerry')).toBe('Tom &amp; Jerry');
       expect(escapeHTML('<b>Bold & Strong</b>')).toBe('&lt;b&gt;Bold &amp; Strong&lt;/b&gt;');
+      expect(escapeHTML(`&<>"'`)).toBe('&amp;&lt;&gt;&quot;&#39;');
     });
 
     it('unescapes HTML entities back to plain characters', () => {

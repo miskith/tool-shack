@@ -137,25 +137,25 @@ Simplified element creation, async/outside event handling, clipboard operations,
 
 Case conversions, string transformations, formatting, escaping, masking, and random string generators.
 
-| Function                                | Description                                                               |
-| --------------------------------------- | ------------------------------------------------------------------------- |
-| `camelCase(value)`                      | Converts string to `camelCase`                                            |
-| `capitalize(value)`                     | Capitalizes the first character of a string                               |
-| `decodeBase64(value)`                   | Safely decodes a Base64 string to a Unicode string                        |
-| `encodeBase64(value)`                   | Safely encodes a Unicode string to a Base64 string                        |
-| `kebabCase(value)`                      | Converts string to `kebab-case`                                           |
-| `pascalCase(value)`                     | Converts string to `PascalCase`                                           |
-| `snakeCase(value)`                      | Converts string to `snake_case`                                           |
-| `slugify(value, separator?)`            | Converts text into URL-safe slug with diacritics removal (default `-`)    |
-| `removeDiacritics(value)`               | Strips accent marks and diacritics from text                              |
-| `truncate(value, length, suffix?)`      | Truncates a string to a given length and appends a suffix (default `...`) |
-| `mask(value, options?)`                 | Masks sensitive string characters (e.g. for card numbers or tokens)       |
-| `formatBytes(bytes, decimals?)`         | Formats byte number into readable string (`'1.5 MB'`, `'2 KB'`)           |
-| `escapeHTML(value)`                     | Escapes HTML entities (`&`, `<`, `>`, `"`, `'`)                           |
-| `unescapeHTML(value)`                   | Unescapes HTML entities back to plain text                                |
-| `byteSize(value)`                       | Calculates the byte length of a string in UTF-8                           |
-| `randomString(length?, charset?)`       | Generates random string using `Math.random`                               |
-| `randomCryptoString(length?, charset?)` | Generates cryptographically secure random string using Web Crypto API     |
+| Function                                | Description                                                                                                  |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `camelCase(value)`                      | Converts string to `camelCase`                                                                               |
+| `capitalize(value)`                     | Capitalizes the first character of a string                                                                  |
+| `decodeBase64(value)`                   | Safely decodes a Base64 string to a Unicode string                                                           |
+| `encodeBase64(value)`                   | Safely encodes a Unicode string to a Base64 string                                                           |
+| `kebabCase(value)`                      | Converts string to `kebab-case`                                                                              |
+| `pascalCase(value)`                     | Converts string to `PascalCase`                                                                              |
+| `snakeCase(value)`                      | Converts string to `snake_case`                                                                              |
+| `slugify(value, separator?)`            | Converts text into URL-safe slug with diacritics removal (default `-`)                                       |
+| `removeDiacritics(value)`               | Strips accent marks and diacritics from text                                                                 |
+| `truncate(value, length, suffix?)`      | Truncates a string to a given length and appends a suffix (default `...`)                                    |
+| `mask(value, options?)`                 | Masks sensitive string characters (e.g. for card numbers or tokens)                                          |
+| `formatBytes(bytes, decimals?)`         | Formats byte number into readable string (`'1.5 MB'`, `'2 KB'`)                                              |
+| `escapeHTML(value)`                     | Encodes `&`, `<`, `>`, `"`, and `'` as HTML entities for ordinary text or quoted attributes; not a sanitizer |
+| `unescapeHTML(value)`                   | Unescapes HTML entities back to plain text                                                                   |
+| `byteSize(value)`                       | Calculates the byte length of a string in UTF-8                                                              |
+| `randomString(length?, charset?)`       | Generates random string using `Math.random`                                                                  |
+| `randomCryptoString(length?, charset?)` | Generates cryptographically secure random string using Web Crypto API                                        |
 
 ---
 
