@@ -115,21 +115,21 @@ Type-safe `localStorage` and `sessionStorage` helpers with automatic JSON serial
 
 Simplified element creation, async/outside event handling, clipboard operations, viewport detection, layout-shift-free scroll lock, and fullscreen.
 
-| Function                                                      | Description                                                                                            |
-| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `createElement(tagName, props)`                               | Creates a DOM element with attributes, styles, dataset, ARIA, listeners, and children in a single call |
-| `addEventListener(target, type, listener, options)`           | Attaches event listener(s) with support for multiple event types and array of targets                  |
-| `addAsyncEventListener(selector, listeners, acceptBubbling?)` | Attaches delegated document listeners for matching elements, with cleanup                              |
-| `addClickOutsideListener(element, callback)`                  | Triggers a callback when clicking outside a specified element, with cleanup                            |
-| `appendBefore(target, element)`                               | Inserts an element immediately before the target node                                                  |
-| `appendAfter(target, element)`                                | Inserts an element immediately after the target node                                                   |
-| `copyToClipboard(text)`                                       | Copies text to clipboard via Clipboard API with legacy fallback                                        |
-| `fireEvent(element, eventName, detail)`                       | Dispatches a custom or native DOM event                                                                |
-| `getElementOffset(element)`                                   | Computes top, left, width, and height offsets relative to viewport/document                            |
-| `isInViewport(element, offset?)`                              | Checks if an element is currently within the visible viewport                                          |
-| `toggleFullscreen(element?)`                                  | Toggles native fullscreen mode for an element or document root                                         |
-| `toggleFullscreenWithFallback(element?, options?)`            | Toggles fullscreen with CSS pseudo-fullscreen fallback for iOS Safari and unsupported browsers         |
-| `waitForElement(selector, timeout?, parent?)`                 | Waits for an element to appear in the DOM using `MutationObserver`                                     |
+| Function                                                      | Description                                                                                                                |
+| ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `createElement(tagName, props)`                               | Creates a DOM element with attributes, styles, dataset, ARIA, listeners, and children; known tags infer their element type |
+| `addEventListener(target, type, listener, options)`           | Attaches event listener(s) with support for multiple event types and array of targets                                      |
+| `addAsyncEventListener(selector, listeners, acceptBubbling?)` | Attaches delegated document listeners for matching elements, with cleanup                                                  |
+| `addClickOutsideListener(element, callback)`                  | Triggers a callback when clicking outside a specified element, with cleanup                                                |
+| `appendBefore(target, element)`                               | Inserts an element immediately before the target node                                                                      |
+| `appendAfter(target, element)`                                | Inserts an element immediately after the target node                                                                       |
+| `copyToClipboard(text)`                                       | Copies text to clipboard via Clipboard API with legacy fallback                                                            |
+| `fireEvent(element, eventName, detail)`                       | Dispatches a custom or native DOM event                                                                                    |
+| `getElementOffset(element)`                                   | Computes top, left, width, and height offsets relative to viewport/document                                                |
+| `isInViewport(element, offset?)`                              | Checks if an element is currently within the visible viewport                                                              |
+| `toggleFullscreen(element?)`                                  | Toggles native fullscreen mode for an element or document root                                                             |
+| `toggleFullscreenWithFallback(element?, options?)`            | Toggles fullscreen with CSS pseudo-fullscreen fallback for iOS Safari and unsupported browsers                             |
+| `waitForElement(selector, timeout?, parent?)`                 | Waits for an element to appear in the DOM using `MutationObserver`                                                         |
 
 ---
 

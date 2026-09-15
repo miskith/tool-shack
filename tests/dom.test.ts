@@ -22,7 +22,7 @@ describe('dom utilities', () => {
       const child = document.createElement('span');
       child.textContent = 'Icon';
 
-      const el = createElement<HTMLButtonElement>('button', {
+      const el = createElement('button', {
         className: 'btn-test',
         style: { color: 'red' },
         dataset: { action: 'submit' },
@@ -47,6 +47,20 @@ describe('dom utilities', () => {
     it('creates basic element without props', () => {
       const div = createElement('div');
       expect(div.tagName).toBe('DIV');
+    });
+
+    it('infers native element types from tag names', () => {
+      const expectType = <T>(_value: T): void => undefined;
+
+      expectType<HTMLButtonElement>(createElement('button'));
+      expectType<HTMLInputElement>(createElement('input'));
+      expectType<HTMLDivElement>(createElement('div'));
+      expectType<HTMLElement>(createElement('my-widget'));
+
+      // @ts-expect-error -- a div is not a button
+      expectType<HTMLButtonElement>(createElement('div'));
+      // @ts-expect-error -- tag inference cannot be overridden with an unrelated element type
+      createElement<HTMLButtonElement>('div');
     });
   });
 

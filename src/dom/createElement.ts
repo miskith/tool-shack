@@ -1,17 +1,25 @@
 import type { IExtendingElementProps } from './interfaces/createElement.js';
 
+type TCreateElementProps<T extends HTMLElement> = Partial<
+  Omit<T, 'children' | 'dataset' | 'style'>
+> &
+  IExtendingElementProps;
+
 /**
  * Method for creating Node element and assigning multiple parameters, event listeners & children in one method call
  *
  * @param tagName Node tag name
  * @param props List of attributes, event listeners or/and children to assign to the newly created element
- * @returns Resulting Node element
+ * @returns Created element; known HTML tags infer their specific element type
  */
-export const createElement = <T = HTMLElement>(
-  tagName: string,
-  props?: Partial<Omit<T, 'children' | 'dataset' | 'style'>> & IExtendingElementProps,
-): T => {
-  const element: HTMLElement = document.createElement(tagName);
+export const createElement: {
+  <K extends keyof HTMLElementTagNameMap>(
+    tagName: K,
+    props?: TCreateElementProps<HTMLElementTagNameMap[K]>,
+  ): HTMLElementTagNameMap[K];
+  (tagName: string, props?: TCreateElementProps<HTMLElement>): HTMLElement;
+} = (tagName: string, props?: TCreateElementProps<HTMLElement>): HTMLElement => {
+  const element = document.createElement(tagName);
 
   if (props) {
     const propsRecord = props as Record<string, unknown>;
@@ -57,5 +65,5 @@ export const createElement = <T = HTMLElement>(
     }
   }
 
-  return element as unknown as T;
+  return element;
 };
