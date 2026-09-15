@@ -1,27 +1,7 @@
-import { isTabFocused } from './isTabFocused.js';
+import { pageVisibilityListener } from './pageVisibilityListener.js';
 
 /**
- * Set callbacks for if current browser tab is in focus
- *
- * @param focusCallback Function to be called when current browser tab goes into focus
- * @param blurCallback Function to be called when current browser tab goes out of focus
- * @returns Cleanup function to remove the listener
+ * @deprecated Use {@link pageVisibilityListener}. Same `visibilitychange`
+ * listener; not window focus or blur.
  */
-export const tabFocusListener = (
-  focusCallback?: () => void,
-  blurCallback?: () => void,
-): (() => void) => {
-  const handleVisibilityChange = (): void => {
-    if (isTabFocused()) {
-      focusCallback?.();
-    } else {
-      blurCallback?.();
-    }
-  };
-
-  document.addEventListener('visibilitychange', handleVisibilityChange);
-
-  return () => {
-    document.removeEventListener('visibilitychange', handleVisibilityChange);
-  };
-};
+export const tabFocusListener = pageVisibilityListener;

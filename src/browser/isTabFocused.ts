@@ -1,6 +1,7 @@
+import { isPageVisible } from './isPageVisible.js';
+
 /**
- * Check if current browser tab is in focus
- *
- * @returns Boolean indicating if current browser tab is in focus
+ * @deprecated Use {@link isPageVisible}. Same as `!document.hidden`; not window
+ * or tab input focus.
  */
-export const isTabFocused = (): boolean => !document.hidden;
+export const isTabFocused = isPageVisible;

@@ -5,12 +5,14 @@ import {
   downloadFile,
   getCookie,
   getQueryParams,
+  isPageVisible,
   isPushNotificationSupported,
   isScrollBehaviorSupported,
   isShareSupported,
   isTabFocused,
   isTouchSupported,
   networkStatusListener,
+  pageVisibilityListener,
   preferColorScheme,
   preferDarkColorScheme,
   preferLightColorScheme,
@@ -128,9 +130,23 @@ describe('browser utilities', () => {
     });
   });
 
-  describe('isTabFocused', () => {
-    it('returns true when document is not hidden', () => {
-      expect(isTabFocused()).toBe(true);
+  describe('isPageVisible', () => {
+    afterEach(() => {
+      Reflect.deleteProperty(document, 'hidden');
+    });
+
+    it('returns true when document.hidden is false', () => {
+      Object.defineProperty(document, 'hidden', { configurable: true, value: false });
+      expect(isPageVisible()).toBe(true);
+    });
+
+    it('returns false when document.hidden is true', () => {
+      Object.defineProperty(document, 'hidden', { configurable: true, value: true });
+      expect(isPageVisible()).toBe(false);
+    });
+
+    it('isTabFocused is a deprecated alias of isPageVisible', () => {
+      expect(isTabFocused).toBe(isPageVisible);
     });
   });
 
@@ -153,20 +169,51 @@ describe('browser utilities', () => {
     });
   });
 
-  describe('tabFocusListener', () => {
-    it('triggers callback on visibilitychange', () => {
-      const focusCb = vi.fn();
-      const blurCb = vi.fn();
+  describe('pageVisibilityListener', () => {
+    afterEach(() => {
+      Reflect.deleteProperty(document, 'hidden');
+    });
 
-      const cleanup = tabFocusListener(focusCb, blurCb);
+    it('calls onVisible when the page is visible', () => {
+      Object.defineProperty(document, 'hidden', { configurable: true, value: false });
+      const onVisible = vi.fn();
+      const onHidden = vi.fn();
+      const cleanup = pageVisibilityListener(onVisible, onHidden);
 
       document.dispatchEvent(new Event('visibilitychange'));
-      expect(focusCb).toHaveBeenCalledTimes(1);
+      expect(onVisible).toHaveBeenCalledTimes(1);
+      expect(onHidden).not.toHaveBeenCalled();
 
+      cleanup();
+    });
+
+    it('calls onHidden when the page is hidden', () => {
+      Object.defineProperty(document, 'hidden', { configurable: true, value: true });
+      const onVisible = vi.fn();
+      const onHidden = vi.fn();
+      const cleanup = pageVisibilityListener(onVisible, onHidden);
+
+      document.dispatchEvent(new Event('visibilitychange'));
+      expect(onHidden).toHaveBeenCalledTimes(1);
+      expect(onVisible).not.toHaveBeenCalled();
+
+      cleanup();
+    });
+
+    it('cleanup removes the listener', () => {
+      Object.defineProperty(document, 'hidden', { configurable: true, value: false });
+      const onVisible = vi.fn();
+      const cleanup = pageVisibilityListener(onVisible);
+
+      document.dispatchEvent(new Event('visibilitychange'));
       cleanup();
       cleanup();
       document.dispatchEvent(new Event('visibilitychange'));
-      expect(focusCb).toHaveBeenCalledTimes(1);
+      expect(onVisible).toHaveBeenCalledTimes(1);
+    });
+
+    it('tabFocusListener is a deprecated alias of pageVisibilityListener', () => {
+      expect(tabFocusListener).toBe(pageVisibilityListener);
     });
   });
 
