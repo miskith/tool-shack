@@ -1,11 +1,13 @@
 import { isNil } from './isNil.js';
 
 /**
- * Perform deep structural comparison between two values
+ * Compare two values by `Object.is`, then Date time, RegExp `toString`, arrays, and own enumerable string keys
+ *
+ * Map, Set, cyclic objects, and symbol keys are not treated as a general deep-equality API.
  *
  * @param a First value to compare
  * @param b Second value to compare
- * @returns Boolean indicating whether two values are structurally equal
+ * @returns Whether the compared shapes are equal under those rules
  */
 export const isEqual = (a: unknown, b: unknown): boolean => {
   if (Object.is(a, b)) {

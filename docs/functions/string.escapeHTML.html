@@ -16,18 +16,19 @@
 <li class="">
 <div class="tsd-signature tsd-anchor-link" id="escapehtml"><span class="tsd-kind-call-signature">escapeHTML</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">html</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><a href="#escapehtml" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Escape special HTML related characters from string</p>
+<div class="tsd-comment tsd-typography"><p>Encode <code>&amp;</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&quot;</code>, and <code>'</code> as HTML entities for ordinary text content or quoted attributes.</p>
+<p>This is not an HTML sanitizer and is not safe for script, style, URL, or unquoted-attribute contexts.</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li><span><span class="tsd-kind-parameter">html</span>: <span class="tsd-signature-type">string</span></span>
-<div class="tsd-comment tsd-typography"><p>String containing HTML related characters</p>
+<div class="tsd-comment tsd-typography"><p>String that may contain HTML-significant characters</p>
 </div></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><p>Safe string with escaped HTML related characters</p>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><p>String with <code>&amp;</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&quot;</code>, and <code>'</code> replaced by HTML entities</p>
 <aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/miskith/tool-shack/blob/9ad51b17e88e700090c07fb844ebf29137e701d7/src/string/escapeHTML.ts#L7">src/string/escapeHTML.ts:7</a></li></ul></aside></div></li></ul></section></div>
+<li>Defined in <a href="https://github.com/miskith/tool-shack/blob/7d9b6cea380717c608931c4f74c6f2cdac70c7b5/src/string/escapeHTML.ts#L9">src/string/escapeHTML.ts:9</a></li></ul></aside></div></li></ul></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">

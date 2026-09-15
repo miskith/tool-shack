@@ -15,9 +15,11 @@ export const preferDarkColorScheme = (): boolean =>
   !!window.matchMedia('(prefers-color-scheme: dark)').matches;
 
 /**
- * Check what color scheme (light or dark) is prefered by user
+ * Check what color scheme the user prefers
  *
- * @returns String indicating prefered light color scheme ('light') or dark color scheme ('dark')
+ * Returns `'light'` when `(prefers-color-scheme: light)` matches; otherwise `'dark'`.
+ *
+ * @returns `'light'` or `'dark'`
  */
 export const preferColorScheme = (): 'light' | 'dark' =>
   preferLightColorScheme() ? 'light' : 'dark';

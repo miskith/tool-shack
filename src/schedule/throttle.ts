@@ -4,7 +4,7 @@ import type { IThrottledFunction } from './interfaces/throttle.js';
  * Creates a throttled function that only invokes callback at most once per every limit milliseconds
  *
  * @param callback Function to throttle
- * @param limit Milliseconds to limit invocations
+ * @param limit Milliseconds to limit invocations (default 300)
  * @returns Throttled function with cancel method
  */
 export const throttle = <T extends (...args: never[]) => unknown>(

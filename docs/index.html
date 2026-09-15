@@ -35,7 +35,7 @@
 <hr>
 <h2 id="modules-apis" class="tsd-anchor-link">Modules &amp; APIs<a href="#modules-apis" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
 <h3 id="🌐-browser-" class="tsd-anchor-link">🌐 Browser (<code>browser</code>)<a href="#🌐-browser-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<p>Utilities for feature detection, device capabilities, cookies, downloads, URL parameters, and tab focus.</p>
+<p>Utilities for feature detection, device capabilities, cookies, downloads, URL parameters, and page visibility.</p>
 <table>
 <thead>
 <tr>
@@ -54,7 +54,7 @@
 </tr>
 <tr>
 <td><code>isPushNotificationSupported()</code></td>
-<td>Checks if Push Notifications and Service Workers are supported</td>
+<td>Checks Web Push support (Notification, Service Worker, and PushManager)</td>
 </tr>
 <tr>
 <td><code>isScrollBehaviorSupported()</code></td>
@@ -65,24 +65,40 @@
 <td>Checks if the Web Share API (<code>navigator.share</code>) is supported</td>
 </tr>
 <tr>
-<td><code>isTabFocused()</code></td>
-<td>Checks whether the browser tab currently has focus</td>
+<td><code>isPageVisible()</code></td>
+<td>Checks whether the page is currently visible (<code>!document.hidden</code>)</td>
 </tr>
 <tr>
-<td><code>tabFocusListener(onFocus, onBlur)</code></td>
-<td>Subscribes callbacks for window/tab focus and blur events</td>
+<td><code>pageVisibilityListener(onVisible, onHidden)</code></td>
+<td>Subscribes to Page Visibility changes with a cleanup handle</td>
+</tr>
+<tr>
+<td><code>isTabFocused()</code></td>
+<td>Deprecated alias of <code>isPageVisible</code></td>
+</tr>
+<tr>
+<td><code>tabFocusListener(onVisible, onHidden)</code></td>
+<td>Deprecated alias of <code>pageVisibilityListener</code></td>
 </tr>
 <tr>
 <td><code>preferColorScheme()</code></td>
-<td>Detects user color scheme preference (<code>'dark'</code>, <code>'light'</code>, or <code>null</code>)</td>
+<td>Returns <code>'light'</code> if that media query matches, otherwise <code>'dark'</code></td>
 </tr>
 <tr>
-<td><code>scrollToElement(element, options)</code></td>
-<td>Smoothly scrolls the window or container to a target element</td>
+<td><code>preferLightColorScheme()</code></td>
+<td>Whether <code>(prefers-color-scheme: light)</code> matches</td>
 </tr>
 <tr>
-<td><code>scrollToPosition(options)</code></td>
-<td>Smoothly scrolls to specific x/y coordinates</td>
+<td><code>preferDarkColorScheme()</code></td>
+<td>Whether <code>(prefers-color-scheme: dark)</code> matches</td>
+</tr>
+<tr>
+<td><code>scrollToElement(element, offset?, smoothScroll?)</code></td>
+<td>Scrolls the window to the element (offset default <code>0</code>, smoothScroll default <code>true</code>)</td>
+</tr>
+<tr>
+<td><code>scrollToPosition(x, y, smoothScroll?, target?)</code></td>
+<td>Scrolls window or a given element to <code>x</code>/<code>y</code> (smoothScroll default <code>true</code>)</td>
 </tr>
 <tr>
 <td><code>downloadFile(data, filename, mimeType?)</code></td>
@@ -112,7 +128,7 @@
 </table>
 <hr>
 <h3 id="💾-storage-" class="tsd-anchor-link">💾 Storage (<code>storage</code>)<a href="#💾-storage-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<p>Type-safe <code>localStorage</code> and <code>sessionStorage</code> helpers with automatic JSON serialization and exception safety.</p>
+<p>Type-safe <code>localStorage</code> and <code>sessionStorage</code> helpers with JSON serialization, optional Base64 encoding, and exception safety.</p>
 <table>
 <thead>
 <tr>
@@ -122,12 +138,12 @@
 </thead>
 <tbody>
 <tr>
-<td><code>getLocalStorage(key, fallback?)</code></td>
-<td>Retrieves item from localStorage with automatic JSON parsing</td>
+<td><code>getLocalStorage(key, fallback?, options?)</code></td>
+<td>JSON-parses localStorage; optional <code>{ encode: true }</code> Base64 decode; fallback default <code>null</code></td>
 </tr>
 <tr>
-<td><code>setLocalStorage(key, value)</code></td>
-<td>Stores item in localStorage with automatic JSON serialization</td>
+<td><code>setLocalStorage(key, value, options?)</code></td>
+<td>JSON-serializes to localStorage; optional Base64; returns <code>false</code> if the value is not serializable</td>
 </tr>
 <tr>
 <td><code>removeLocalStorage(key)</code></td>
@@ -138,12 +154,12 @@
 <td>Clears all items from localStorage</td>
 </tr>
 <tr>
-<td><code>getSessionStorage(key, fallback?)</code></td>
-<td>Retrieves item from sessionStorage with automatic JSON parsing</td>
+<td><code>getSessionStorage(key, fallback?, options?)</code></td>
+<td>JSON-parses sessionStorage; optional <code>{ encode: true }</code> Base64 decode; fallback default <code>null</code></td>
 </tr>
 <tr>
-<td><code>setSessionStorage(key, value)</code></td>
-<td>Stores item in sessionStorage with automatic JSON serialization</td>
+<td><code>setSessionStorage(key, value, options?)</code></td>
+<td>JSON-serializes to sessionStorage; optional Base64; returns <code>false</code> if the value is not serializable</td>
 </tr>
 <tr>
 <td><code>removeSessionStorage(key)</code></td>
@@ -157,7 +173,7 @@
 </table>
 <hr>
 <h3 id="🧱-dom-" class="tsd-anchor-link">🧱 DOM (<code>dom</code>)<a href="#🧱-dom-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<p>Simplified element creation, async/outside event handling, clipboard operations, viewport detection, layout-shift-free scroll lock, and fullscreen.</p>
+<p>Simplified element creation, async/outside event handling, clipboard operations, viewport detection, and fullscreen.</p>
 <table>
 <thead>
 <tr>
@@ -167,40 +183,40 @@
 </thead>
 <tbody>
 <tr>
-<td><code>createElement(tagName, props)</code></td>
-<td>Creates a DOM element with attributes, styles, dataset, ARIA, listeners, and children in a single call</td>
+<td><code>createElement(tagName, props?)</code></td>
+<td>Creates a DOM element with attributes, styles, dataset, ARIA, listeners, and children; known tags infer their element type</td>
 </tr>
 <tr>
-<td><code>addEventListener(target, type, listener, options)</code></td>
-<td>Attaches event listener(s) with support for multiple event types and array of targets</td>
+<td><code>addEventListener(element, listeners)</code></td>
+<td>Attaches a map of event-name handlers to one element or a list of elements (no cleanup)</td>
 </tr>
 <tr>
-<td><code>addAsyncEventListener(target, type, listener, options)</code></td>
-<td>Attaches an asynchronous delegated event listener</td>
+<td><code>addAsyncEventListener(selector, listeners, acceptBubbling?)</code></td>
+<td>Attaches delegated document listeners for matching elements, with cleanup</td>
 </tr>
 <tr>
 <td><code>addClickOutsideListener(element, callback)</code></td>
-<td>Triggers a callback when clicking outside a specified element</td>
+<td>Triggers a callback when clicking outside a specified element, with cleanup</td>
 </tr>
 <tr>
-<td><code>appendBefore(target, element)</code></td>
-<td>Inserts an element immediately before the target node</td>
+<td><code>appendBefore(newNode, referenceNode)</code></td>
+<td>Inserts <code>newNode</code> immediately before <code>referenceNode</code></td>
 </tr>
 <tr>
-<td><code>appendAfter(target, element)</code></td>
-<td>Inserts an element immediately after the target node</td>
+<td><code>appendAfter(newNode, referenceNode)</code></td>
+<td>Inserts <code>newNode</code> immediately after <code>referenceNode</code></td>
 </tr>
 <tr>
 <td><code>copyToClipboard(text)</code></td>
-<td>Copies text to clipboard via Clipboard API with legacy fallback</td>
+<td>Copies text via Clipboard API with textarea fallback; returns <code>Promise&lt;boolean&gt;</code></td>
 </tr>
 <tr>
-<td><code>fireEvent(element, eventName, detail)</code></td>
-<td>Dispatches a custom or native DOM event</td>
+<td><code>fireEvent(element, eventType)</code></td>
+<td>Dispatches a native <code>Event</code> (no <code>detail</code> payload)</td>
 </tr>
 <tr>
 <td><code>getElementOffset(element)</code></td>
-<td>Computes top, left, width, and height offsets relative to viewport/document</td>
+<td>Returns document-relative <code>{ top, left }</code></td>
 </tr>
 <tr>
 <td><code>isInViewport(element, offset?)</code></td>
@@ -268,7 +284,7 @@
 <td>Strips accent marks and diacritics from text</td>
 </tr>
 <tr>
-<td><code>truncate(value, length, suffix?)</code></td>
+<td><code>truncate(value, maxLength, suffix?)</code></td>
 <td>Truncates a string to a given length and appends a suffix (default <code>...</code>)</td>
 </tr>
 <tr>
@@ -281,7 +297,7 @@
 </tr>
 <tr>
 <td><code>escapeHTML(value)</code></td>
-<td>Escapes HTML entities (<code>&amp;</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&quot;</code>, <code>'</code>)</td>
+<td>Encodes <code>&amp;</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&quot;</code>, and <code>'</code> as HTML entities for ordinary text or quoted attributes; not a sanitizer</td>
 </tr>
 <tr>
 <td><code>unescapeHTML(value)</code></td>
@@ -317,8 +333,8 @@
 <td>Breaks down milliseconds into <code>{ days, hours, minutes, seconds, milliseconds }</code></td>
 </tr>
 <tr>
-<td><code>dateAsIso(date?)</code></td>
-<td>Formats a Date object as an ISO string (<code>YYYY-MM-DDTHH:mm:ss.sssZ</code>)</td>
+<td><code>dateAsIso(date)</code></td>
+<td>Formats a Date as local <code>YYYY-MM-DDTHH:mm:ss±HH:mm</code> (required Date; no milliseconds)</td>
 </tr>
 <tr>
 <td><code>timeAgo(date, locale?)</code></td>
@@ -326,13 +342,13 @@
 </tr>
 <tr>
 <td><code>isSameDay(date1, date2)</code></td>
-<td>Checks if two dates fall on the same calendar day</td>
+<td>Checks if two Date, timestamp, or date-string values fall on the same calendar day</td>
 </tr>
 </tbody>
 </table>
 <hr>
 <h3 id="⚙️-general-" class="tsd-anchor-link">⚙️ General (<code>general</code>)<a href="#⚙️-general-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<p>Array deduplication, picking, grouping &amp; chunking, deep equality, number clamping, value safety checks, and JSON validation.</p>
+<p>Array deduplication, picking, grouping &amp; chunking, value comparison, number clamping, value safety checks, and JSON validation.</p>
 <table>
 <thead>
 <tr>
@@ -351,7 +367,7 @@
 </tr>
 <tr>
 <td><code>isEqual(a, b)</code></td>
-<td>Performs deep structural comparison between two values</td>
+<td>Compares primitives, arrays, Dates, RegExps, and own enumerable string keys</td>
 </tr>
 <tr>
 <td><code>clamp(value, min, max)</code></td>
@@ -363,7 +379,7 @@
 </tr>
 <tr>
 <td><code>chunk(array, size?)</code></td>
-<td>Splits array into chunks of specified size</td>
+<td>Splits array into chunks of specified size (default <code>1</code>)</td>
 </tr>
 <tr>
 <td><code>isEmpty(value)</code></td>
@@ -392,11 +408,11 @@
 <tbody>
 <tr>
 <td><code>debounce(fn, delay?)</code></td>
-<td>Creates debounced function with <code>.cancel()</code> handle</td>
+<td>Creates debounced function with <code>.cancel()</code> (delay default <code>300</code>)</td>
 </tr>
 <tr>
 <td><code>throttle(fn, limit?)</code></td>
-<td>Creates throttled function with <code>.cancel()</code> handle</td>
+<td>Creates throttled function with <code>.cancel()</code> (limit default <code>300</code>)</td>
 </tr>
 <tr>
 <td><code>sleep(ms)</code></td>
@@ -408,11 +424,11 @@
 </tr>
 <tr>
 <td><code>runAnimation(callback, autoStart?)</code></td>
-<td>Executes a callback with <code>requestAnimationFrame</code> and returns a cancel function</td>
+<td><code>requestAnimationFrame</code> loop; returns <code>{ startAnimation, stopAnimation }</code></td>
 </tr>
 <tr>
 <td><code>runAsync(callback)</code></td>
-<td>Runs a callback asynchronously in a Web Worker</td>
+<td>Runs function source in a Blob Web Worker (no closures; async not awaited)</td>
 </tr>
 </tbody>
 </table>

@@ -16,21 +16,22 @@
 <li class="">
 <div class="tsd-signature tsd-anchor-link" id="addeventlistener"><span class="tsd-kind-call-signature">addEventListener</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">element</span><span class="tsd-signature-symbol">:</span><br/>        <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">HTMLElement</span><br/>        <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">HTMLCollectionOf</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">&gt;</span><br/>        <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">NodeListOf</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">&gt;</span><br/>        <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">listeners</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><br/>        <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span><br/>        <span class="tsd-signature-type">EventListenerOrEventListenerObject</span><br/>        <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">EventListenerOrEventListenerObject</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">void</span><a href="#addeventlistener" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Add event listener(s) to one or more Node elements</p>
+<div class="tsd-comment tsd-typography"><p>Add event listener(s) to one or more elements</p>
+<p><code>listeners</code> is a map of event name to one handler or an array of handlers. This helper does not take <code>AddEventListenerOptions</code> and does not return cleanup.</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li><span><span class="tsd-kind-parameter">element</span>: <br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">HTMLElement</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">HTMLCollectionOf</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">&gt;</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">NodeListOf</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">&gt;</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span></span>
-<div class="tsd-comment tsd-typography"><p>One or multiple Node element(s) to set listener(s) for</p>
+<div class="tsd-comment tsd-typography"><p>One element or a list of elements</p>
 </div></li>
 <li><span><span class="tsd-kind-parameter">listeners</span>: <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><br/>    <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-signature-type">EventListenerOrEventListenerObject</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">EventListenerOrEventListenerObject</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">&gt;</span></span>
-<div class="tsd-comment tsd-typography"><p>List of event types and related callback(s)</p>
+<div class="tsd-comment tsd-typography"><p>Event name to handler or handler array</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><p>void</p>
 <aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/miskith/tool-shack/blob/9ad51b17e88e700090c07fb844ebf29137e701d7/src/dom/addEventListener.ts#L8">src/dom/addEventListener.ts:8</a></li></ul></aside></div></li></ul></section></div>
+<li>Defined in <a href="https://github.com/miskith/tool-shack/blob/7d9b6cea380717c608931c4f74c6f2cdac70c7b5/src/dom/addEventListener.ts#L10">src/dom/addEventListener.ts:10</a></li></ul></aside></div></li></ul></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">

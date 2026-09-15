@@ -73,61 +73,63 @@ console.log(isValidJson('{"valid": true}')); // true
 
 Utilities for feature detection, device capabilities, cookies, downloads, URL parameters, and page visibility.
 
-| Function                                      | Description                                                             |
-| --------------------------------------------- | ----------------------------------------------------------------------- |
-| `detectOS()`                                  | Detects user operating system (`'ios'`, `'android'`, `'macos'`, etc.)   |
-| `isTouchSupported()`                          | Checks if the current device/browser supports touch events              |
-| `isPushNotificationSupported()`               | Checks Web Push support (Notification, Service Worker, and PushManager) |
-| `isScrollBehaviorSupported()`                 | Checks if native smooth scroll behavior is supported                    |
-| `isShareSupported()`                          | Checks if the Web Share API (`navigator.share`) is supported            |
-| `isPageVisible()`                             | Checks whether the page is currently visible (`!document.hidden`)       |
-| `pageVisibilityListener(onVisible, onHidden)` | Subscribes to Page Visibility changes with a cleanup handle             |
-| `isTabFocused()`                              | Deprecated alias of `isPageVisible`                                     |
-| `tabFocusListener(onVisible, onHidden)`       | Deprecated alias of `pageVisibilityListener`                            |
-| `preferColorScheme()`                         | Detects user color scheme preference (`'dark'`, `'light'`, or `null`)   |
-| `scrollToElement(element, options)`           | Smoothly scrolls the window or container to a target element            |
-| `scrollToPosition(options)`                   | Smoothly scrolls to specific x/y coordinates                            |
-| `downloadFile(data, filename, mimeType?)`     | Programmatically triggers file download in the browser                  |
-| `getQueryParams(url?)`                        | Extracts URL search query parameters into a key-value object            |
-| `networkStatusListener(onOnline, onOffline)`  | Subscribes to browser online/offline events with cleanup handle         |
-| `getCookie(name)`                             | Retrieves and decodes a cookie value by name                            |
-| `setCookie(name, value, options?)`            | Sets a browser cookie with days, path, domain, secure, and sameSite     |
-| `deleteCookie(name, options?)`                | Deletes a browser cookie by name                                        |
+| Function                                           | Description                                                                         |
+| -------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `detectOS()`                                       | Detects user operating system (`'ios'`, `'android'`, `'macos'`, etc.)               |
+| `isTouchSupported()`                               | Checks if the current device/browser supports touch events                          |
+| `isPushNotificationSupported()`                    | Checks Web Push support (Notification, Service Worker, and PushManager)             |
+| `isScrollBehaviorSupported()`                      | Checks if native smooth scroll behavior is supported                                |
+| `isShareSupported()`                               | Checks if the Web Share API (`navigator.share`) is supported                        |
+| `isPageVisible()`                                  | Checks whether the page is currently visible (`!document.hidden`)                   |
+| `pageVisibilityListener(onVisible, onHidden)`      | Subscribes to Page Visibility changes with a cleanup handle                         |
+| `isTabFocused()`                                   | Deprecated alias of `isPageVisible`                                                 |
+| `tabFocusListener(onVisible, onHidden)`            | Deprecated alias of `pageVisibilityListener`                                        |
+| `preferColorScheme()`                              | Returns `'light'` if that media query matches, otherwise `'dark'`                   |
+| `preferLightColorScheme()`                         | Whether `(prefers-color-scheme: light)` matches                                     |
+| `preferDarkColorScheme()`                          | Whether `(prefers-color-scheme: dark)` matches                                      |
+| `scrollToElement(element, offset?, smoothScroll?)` | Scrolls the window to the element (offset default `0`, smoothScroll default `true`) |
+| `scrollToPosition(x, y, smoothScroll?, target?)`   | Scrolls window or a given element to `x`/`y` (smoothScroll default `true`)          |
+| `downloadFile(data, filename, mimeType?)`          | Programmatically triggers file download in the browser                              |
+| `getQueryParams(url?)`                             | Extracts URL search query parameters into a key-value object                        |
+| `networkStatusListener(onOnline, onOffline)`       | Subscribes to browser online/offline events with cleanup handle                     |
+| `getCookie(name)`                                  | Retrieves and decodes a cookie value by name                                        |
+| `setCookie(name, value, options?)`                 | Sets a browser cookie with days, path, domain, secure, and sameSite                 |
+| `deleteCookie(name, options?)`                     | Deletes a browser cookie by name                                                    |
 
 ---
 
 ### 💾 Storage (`storage`)
 
-Type-safe `localStorage` and `sessionStorage` helpers with automatic JSON serialization and exception safety.
+Type-safe `localStorage` and `sessionStorage` helpers with JSON serialization, optional Base64 encoding, and exception safety.
 
-| Function                            | Description                                                     |
-| ----------------------------------- | --------------------------------------------------------------- |
-| `getLocalStorage(key, fallback?)`   | Retrieves item from localStorage with automatic JSON parsing    |
-| `setLocalStorage(key, value)`       | Stores item in localStorage with automatic JSON serialization   |
-| `removeLocalStorage(key)`           | Removes item from localStorage                                  |
-| `clearLocalStorage()`               | Clears all items from localStorage                              |
-| `getSessionStorage(key, fallback?)` | Retrieves item from sessionStorage with automatic JSON parsing  |
-| `setSessionStorage(key, value)`     | Stores item in sessionStorage with automatic JSON serialization |
-| `removeSessionStorage(key)`         | Removes item from sessionStorage                                |
-| `clearSessionStorage()`             | Clears all items from sessionStorage                            |
+| Function                                      | Description                                                                                          |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `getLocalStorage(key, fallback?, options?)`   | JSON-parses localStorage; optional `{ encode: true }` Base64 decode; fallback default `null`         |
+| `setLocalStorage(key, value, options?)`       | JSON-serializes to localStorage; optional Base64; returns `false` if the value is not serializable   |
+| `removeLocalStorage(key)`                     | Removes item from localStorage                                                                       |
+| `clearLocalStorage()`                         | Clears all items from localStorage                                                                   |
+| `getSessionStorage(key, fallback?, options?)` | JSON-parses sessionStorage; optional `{ encode: true }` Base64 decode; fallback default `null`       |
+| `setSessionStorage(key, value, options?)`     | JSON-serializes to sessionStorage; optional Base64; returns `false` if the value is not serializable |
+| `removeSessionStorage(key)`                   | Removes item from sessionStorage                                                                     |
+| `clearSessionStorage()`                       | Clears all items from sessionStorage                                                                 |
 
 ---
 
 ### 🧱 DOM (`dom`)
 
-Simplified element creation, async/outside event handling, clipboard operations, viewport detection, layout-shift-free scroll lock, and fullscreen.
+Simplified element creation, async/outside event handling, clipboard operations, viewport detection, and fullscreen.
 
 | Function                                                      | Description                                                                                                                |
 | ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `createElement(tagName, props)`                               | Creates a DOM element with attributes, styles, dataset, ARIA, listeners, and children; known tags infer their element type |
-| `addEventListener(target, type, listener, options)`           | Attaches event listener(s) with support for multiple event types and array of targets                                      |
+| `createElement(tagName, props?)`                              | Creates a DOM element with attributes, styles, dataset, ARIA, listeners, and children; known tags infer their element type |
+| `addEventListener(element, listeners)`                        | Attaches a map of event-name handlers to one element or a list of elements (no cleanup)                                    |
 | `addAsyncEventListener(selector, listeners, acceptBubbling?)` | Attaches delegated document listeners for matching elements, with cleanup                                                  |
 | `addClickOutsideListener(element, callback)`                  | Triggers a callback when clicking outside a specified element, with cleanup                                                |
-| `appendBefore(target, element)`                               | Inserts an element immediately before the target node                                                                      |
-| `appendAfter(target, element)`                                | Inserts an element immediately after the target node                                                                       |
-| `copyToClipboard(text)`                                       | Copies text to clipboard via Clipboard API with legacy fallback                                                            |
-| `fireEvent(element, eventName, detail)`                       | Dispatches a custom or native DOM event                                                                                    |
-| `getElementOffset(element)`                                   | Computes top, left, width, and height offsets relative to viewport/document                                                |
+| `appendBefore(newNode, referenceNode)`                        | Inserts `newNode` immediately before `referenceNode`                                                                       |
+| `appendAfter(newNode, referenceNode)`                         | Inserts `newNode` immediately after `referenceNode`                                                                        |
+| `copyToClipboard(text)`                                       | Copies text via Clipboard API with textarea fallback; returns `Promise<boolean>`                                           |
+| `fireEvent(element, eventType)`                               | Dispatches a native `Event` (no `detail` payload)                                                                          |
+| `getElementOffset(element)`                                   | Returns document-relative `{ top, left }`                                                                                  |
 | `isInViewport(element, offset?)`                              | Checks if an element is currently within the visible viewport                                                              |
 | `toggleFullscreen(element?)`                                  | Toggles native fullscreen mode for an element or document root                                                             |
 | `toggleFullscreenWithFallback(element?, options?)`            | Toggles fullscreen with CSS pseudo-fullscreen fallback for iOS Safari and unsupported browsers                             |
@@ -150,7 +152,7 @@ Case conversions, string transformations, formatting, escaping, masking, and ran
 | `snakeCase(value)`                      | Converts string to `snake_case`                                                                              |
 | `slugify(value, separator?)`            | Converts text into URL-safe slug with diacritics removal (default `-`)                                       |
 | `removeDiacritics(value)`               | Strips accent marks and diacritics from text                                                                 |
-| `truncate(value, length, suffix?)`      | Truncates a string to a given length and appends a suffix (default `...`)                                    |
+| `truncate(value, maxLength, suffix?)`   | Truncates a string to a given length and appends a suffix (default `...`)                                    |
 | `mask(value, options?)`                 | Masks sensitive string characters (e.g. for card numbers or tokens)                                          |
 | `formatBytes(bytes, decimals?)`         | Formats byte number into readable string (`'1.5 MB'`, `'2 KB'`)                                              |
 | `escapeHTML(value)`                     | Encodes `&`, `<`, `>`, `"`, and `'` as HTML entities for ordinary text or quoted attributes; not a sanitizer |
@@ -165,30 +167,30 @@ Case conversions, string transformations, formatting, escaping, masking, and ran
 
 Date formatting, duration parsing, relative time, and calendar day comparison.
 
-| Function                      | Description                                                                     |
-| ----------------------------- | ------------------------------------------------------------------------------- |
-| `parseDuration(durationInMs)` | Breaks down milliseconds into `{ days, hours, minutes, seconds, milliseconds }` |
-| `dateAsIso(date?)`            | Formats a Date object as an ISO string (`YYYY-MM-DDTHH:mm:ss.sssZ`)             |
-| `timeAgo(date, locale?)`      | Formats a date into a human-readable relative string (`'5 minutes ago'`)        |
-| `isSameDay(date1, date2)`     | Checks if two dates fall on the same calendar day                               |
+| Function                      | Description                                                                          |
+| ----------------------------- | ------------------------------------------------------------------------------------ |
+| `parseDuration(durationInMs)` | Breaks down milliseconds into `{ days, hours, minutes, seconds, milliseconds }`      |
+| `dateAsIso(date)`             | Formats a Date as local `YYYY-MM-DDTHH:mm:ss±HH:mm` (required Date; no milliseconds) |
+| `timeAgo(date, locale?)`      | Formats a date into a human-readable relative string (`'5 minutes ago'`)             |
+| `isSameDay(date1, date2)`     | Checks if two Date, timestamp, or date-string values fall on the same calendar day   |
 
 ---
 
 ### ⚙️ General (`general`)
 
-Array deduplication, picking, grouping & chunking, deep equality, number clamping, value safety checks, and JSON validation.
+Array deduplication, picking, grouping & chunking, value comparison, number clamping, value safety checks, and JSON validation.
 
-| Function                 | Description                                             |
-| ------------------------ | ------------------------------------------------------- |
-| `pick(object, keys)`     | Creates object composed of picked object properties     |
-| `unique(array, keyFn?)`  | Deduplicates array items by reference or key callback   |
-| `isEqual(a, b)`          | Performs deep structural comparison between two values  |
-| `clamp(value, min, max)` | Constrains a number between min and max boundaries      |
-| `groupBy(array, keyFn)`  | Groups array elements into an object by key             |
-| `chunk(array, size?)`    | Splits array into chunks of specified size              |
-| `isEmpty(value)`         | Checks if a string, array, map, set, or object is empty |
-| `isNil(value)`           | Checks if a value is `null` or `undefined`              |
-| `isValidJson(value)`     | Validates whether a given string is valid JSON          |
+| Function                 | Description                                                                 |
+| ------------------------ | --------------------------------------------------------------------------- |
+| `pick(object, keys)`     | Creates object composed of picked object properties                         |
+| `unique(array, keyFn?)`  | Deduplicates array items by reference or key callback                       |
+| `isEqual(a, b)`          | Compares primitives, arrays, Dates, RegExps, and own enumerable string keys |
+| `clamp(value, min, max)` | Constrains a number between min and max boundaries                          |
+| `groupBy(array, keyFn)`  | Groups array elements into an object by key                                 |
+| `chunk(array, size?)`    | Splits array into chunks of specified size (default `1`)                    |
+| `isEmpty(value)`         | Checks if a string, array, map, set, or object is empty                     |
+| `isNil(value)`           | Checks if a value is `null` or `undefined`                                  |
+| `isValidJson(value)`     | Validates whether a given string is valid JSON                              |
 
 ---
 
@@ -196,14 +198,14 @@ Array deduplication, picking, grouping & chunking, deep equality, number clampin
 
 Debouncing, throttling, async retry, sleep, and animation frames.
 
-| Function                             | Description                                                                    |
-| ------------------------------------ | ------------------------------------------------------------------------------ |
-| `debounce(fn, delay?)`               | Creates debounced function with `.cancel()` handle                             |
-| `throttle(fn, limit?)`               | Creates throttled function with `.cancel()` handle                             |
-| `sleep(ms)`                          | Promise-based delay helper (`await sleep(500)`)                                |
-| `retry(fn, options?)`                | Retries async function with exponential backoff before failing                 |
-| `runAnimation(callback, autoStart?)` | Executes a callback with `requestAnimationFrame` and returns a cancel function |
-| `runAsync(callback)`                 | Runs a callback asynchronously in a Web Worker                                 |
+| Function                             | Description                                                                |
+| ------------------------------------ | -------------------------------------------------------------------------- |
+| `debounce(fn, delay?)`               | Creates debounced function with `.cancel()` (delay default `300`)          |
+| `throttle(fn, limit?)`               | Creates throttled function with `.cancel()` (limit default `300`)          |
+| `sleep(ms)`                          | Promise-based delay helper (`await sleep(500)`)                            |
+| `retry(fn, options?)`                | Retries async function with exponential backoff before failing             |
+| `runAnimation(callback, autoStart?)` | `requestAnimationFrame` loop; returns `{ startAnimation, stopAnimation }`  |
+| `runAsync(callback)`                 | Runs function source in a Blob Web Worker (no closures; async not awaited) |
 
 ---
 

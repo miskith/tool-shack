@@ -1,8 +1,10 @@
 /**
- * Return date in ISO format with timezone
+ * Format a Date as local calendar date-time with numeric timezone offset
  *
- * @param date Date to be converted
- * @returns ISO format with timezone
+ * Output shape: `YYYY-MM-DDTHH:mm:ss±HH:mm` (no milliseconds, not UTC `Z`).
+ *
+ * @param date Date to format
+ * @returns Local ISO-like string with timezone offset
  */
 export const dateAsIso = (date: Date): string => {
   const timezoneOffset = date.getTimezoneOffset();

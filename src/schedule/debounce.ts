@@ -4,7 +4,7 @@ import type { IDebouncedFunction } from './interfaces/debounce.js';
  * Creates a debounced function that delays invoking callback until after delay milliseconds
  *
  * @param callback Function to debounce
- * @param delay Milliseconds to delay
+ * @param delay Milliseconds to delay (default 300)
  * @returns Debounced function with cancel method
  */
 export const debounce = <T extends (...args: never[]) => unknown>(

@@ -1,8 +1,10 @@
 /**
- * Add event listener(s) to one or more Node elements
+ * Add event listener(s) to one or more elements
  *
- * @param element One or multiple Node element(s) to set listener(s) for
- * @param listeners List of event types and related callback(s)
+ * `listeners` is a map of event name to one handler or an array of handlers. This helper does not take `AddEventListenerOptions` and does not return cleanup.
+ *
+ * @param element One element or a list of elements
+ * @param listeners Event name to handler or handler array
  * @returns void
  */
 export const addEventListener = (
