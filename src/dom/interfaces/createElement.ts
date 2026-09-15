@@ -5,7 +5,7 @@ export type TAriaLabelKey =
   | 'current'
   | 'describedby'
   | 'details'
-  | 'disables'
+  | 'disabled'
   | 'dropeffect'
   | 'errormessage'
   | 'expanded'

@@ -26,7 +26,7 @@ describe('dom utilities', () => {
         className: 'btn-test',
         style: { color: 'red' },
         dataset: { action: 'submit' },
-        aria: { label: 'Submit form' },
+        aria: { label: 'Submit form', disabled: 'true' },
         role: 'button',
         listeners: { click: clickHandler },
         children: ['Click Me ', child],
@@ -37,6 +37,7 @@ describe('dom utilities', () => {
       expect(el.style.color).toBe('red');
       expect(el.dataset.action).toBe('submit');
       expect(el.getAttribute('aria-label')).toBe('Submit form');
+      expect(el.getAttribute('aria-disabled')).toBe('true');
       expect(el.getAttribute('role')).toBe('button');
       expect(el.textContent).toBe('Click Me Icon');
 
@@ -61,6 +62,12 @@ describe('dom utilities', () => {
       expectType<HTMLButtonElement>(createElement('div'));
       // @ts-expect-error -- tag inference cannot be overridden with an unrelated element type
       createElement<HTMLButtonElement>('div');
+    });
+
+    it('accepts aria-disabled and rejects the disables typo', () => {
+      createElement('button', { aria: { disabled: 'true' } });
+      // @ts-expect-error -- disables is not a valid ARIA attribute suffix
+      createElement('button', { aria: { disables: 'true' } });
     });
   });
 
