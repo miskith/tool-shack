@@ -337,6 +337,52 @@ describe('dom utilities', () => {
       await toggleFullscreenWithFallback(el, { className: 'is-fullscreen-custom' });
       expect(el.classList.contains('is-fullscreen-custom')).toBe(false);
     });
+
+    it('keeps a pre-existing fallback class and does not write dataset', async () => {
+      const el = document.createElement('div');
+      // @ts-expect-error simulate unsupported
+      el.requestFullscreen = undefined;
+      el.className = 'is-fullscreen-custom app-owned';
+      el.dataset.userKey = 'keep';
+
+      await toggleFullscreenWithFallback(el, { className: 'is-fullscreen-custom' });
+      expect(el.classList.contains('is-fullscreen-custom')).toBe(true);
+      expect(el.dataset.userKey).toBe('keep');
+      expect(el.dataset.pseudoFullscreen).toBeUndefined();
+
+      await toggleFullscreenWithFallback(el);
+      expect(el.classList.contains('is-fullscreen-custom')).toBe(true);
+      expect(el.classList.contains('app-owned')).toBe(true);
+      expect(el.dataset.userKey).toBe('keep');
+      expect(el.dataset.pseudoFullscreen).toBeUndefined();
+      expect(el.dataset.prevPosition).toBeUndefined();
+    });
+
+    it('restores original inline styles and ignores exit options', async () => {
+      const el = document.createElement('div');
+      // @ts-expect-error simulate unsupported
+      el.requestFullscreen = undefined;
+      el.style.position = 'relative';
+      el.style.zIndex = '2';
+      el.dataset.userKey = 'keep';
+
+      await toggleFullscreenWithFallback(el, { zIndex: 10000 });
+      expect(el.style.position).toBe('fixed');
+      expect(el.dataset.userKey).toBe('keep');
+      expect(el.dataset.prevPosition).toBeUndefined();
+
+      await toggleFullscreenWithFallback(el, { className: 'is-fullscreen-custom' });
+      expect(el.style.position).toBe('relative');
+      expect(el.style.zIndex).toBe('2');
+      expect(el.classList.contains('is-fullscreen-custom')).toBe(false);
+      expect(el.dataset.userKey).toBe('keep');
+
+      const enteredAgain = await toggleFullscreenWithFallback(el);
+      expect(enteredAgain).toBe(true);
+      const exitedAgain = await toggleFullscreenWithFallback(el);
+      expect(exitedAgain).toBe(false);
+      expect(el.style.position).toBe('relative');
+    });
   });
 
   describe('copyToClipboard', () => {

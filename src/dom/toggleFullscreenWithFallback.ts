@@ -1,4 +1,32 @@
 import type { IFullscreenFallbackOptions } from './interfaces/toggleFullscreenWithFallback.js';
+import type { TPseudoFullscreenState } from './types/toggleFullscreenWithFallback.js';
+
+const pseudoFullscreenState = new WeakMap<HTMLElement, TPseudoFullscreenState>();
+
+const restorePseudoFullscreen = (element: HTMLElement, state: TPseudoFullscreenState): void => {
+  switch (state.mode) {
+    case 'class':
+      if (state.added) {
+        element.classList.remove(state.className);
+      }
+      break;
+    case 'style':
+      element.style.position = state.position;
+      element.style.top = state.top;
+      element.style.left = state.left;
+      element.style.width = state.width;
+      element.style.height = state.height;
+      element.style.zIndex = state.zIndex;
+      element.style.overflow = state.overflow;
+      break;
+    default: {
+      const _exhaustive: never = state;
+      throw new Error(`Unhandled pseudo-fullscreen state: ${_exhaustive}`);
+    }
+  }
+
+  pseudoFullscreenState.delete(element);
+};
 
 /**
  * Toggle fullscreen mode with CSS pseudo-fullscreen fallback for unsupported environments (such as iOS Safari)
@@ -24,47 +52,32 @@ export const toggleFullscreenWithFallback = async (
     return true;
   }
 
-  // Fallback: CSS pseudo-fullscreen
-  const customClass = options?.className;
-  const zIndex = options?.zIndex ?? 9999;
-  const isPseudoActive = element.dataset.pseudoFullscreen === 'true';
-
-  if (isPseudoActive) {
-    if (customClass) {
-      element.classList.remove(customClass);
-    } else {
-      element.style.position = element.dataset.prevPosition ?? '';
-      element.style.top = element.dataset.prevTop ?? '';
-      element.style.left = element.dataset.prevLeft ?? '';
-      element.style.width = element.dataset.prevWidth ?? '';
-      element.style.height = element.dataset.prevHeight ?? '';
-      element.style.zIndex = element.dataset.prevZIndex ?? '';
-      element.style.overflow = element.dataset.prevOverflow ?? '';
-
-      delete element.dataset.prevPosition;
-      delete element.dataset.prevTop;
-      delete element.dataset.prevLeft;
-      delete element.dataset.prevWidth;
-      delete element.dataset.prevHeight;
-      delete element.dataset.prevZIndex;
-      delete element.dataset.prevOverflow;
-    }
-
-    delete element.dataset.pseudoFullscreen;
+  const existingState = pseudoFullscreenState.get(element);
+  if (existingState) {
+    restorePseudoFullscreen(element, existingState);
     return false;
   }
 
-  if (customClass) {
-    element.classList.add(customClass);
-  } else {
-    element.dataset.prevPosition = element.style.position;
-    element.dataset.prevTop = element.style.top;
-    element.dataset.prevLeft = element.style.left;
-    element.dataset.prevWidth = element.style.width;
-    element.dataset.prevHeight = element.style.height;
-    element.dataset.prevZIndex = element.style.zIndex;
-    element.dataset.prevOverflow = element.style.overflow;
+  const customClass = options?.className;
+  const zIndex = options?.zIndex ?? 9999;
 
+  if (customClass) {
+    const added = !element.classList.contains(customClass);
+    if (added) {
+      element.classList.add(customClass);
+    }
+    pseudoFullscreenState.set(element, { mode: 'class', className: customClass, added });
+  } else {
+    const styleState: TPseudoFullscreenState = {
+      mode: 'style',
+      position: element.style.position,
+      top: element.style.top,
+      left: element.style.left,
+      width: element.style.width,
+      height: element.style.height,
+      zIndex: element.style.zIndex,
+      overflow: element.style.overflow,
+    };
     element.style.position = 'fixed';
     element.style.top = '0';
     element.style.left = '0';
@@ -72,8 +85,8 @@ export const toggleFullscreenWithFallback = async (
     element.style.height = '100vh';
     element.style.zIndex = String(zIndex);
     element.style.overflow = 'auto';
+    pseudoFullscreenState.set(element, styleState);
   }
 
-  element.dataset.pseudoFullscreen = 'true';
   return true;
 };
