@@ -7,9 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.1.0] - 2026-09-22
+## [1.1.2] - 2026-09-22
 
-- Fix createElement
+### Added
+
+- Domain subpath exports for `browser`, `dateTime`, `dom`, `general`, `schedule`, `storage`, and `string` (`import` and `require`)
+
+## [1.1.1] - 2026-09-22
+
+### Fixed
+
+- `createElement` accepts an explicit element type for a string tag
 
 ## [1.1.0] - 2026-09-15
 
