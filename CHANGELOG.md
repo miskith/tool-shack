@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.0] - 2026-09-22
+
+- Fix createElement
+
 ## [1.1.0] - 2026-09-15
 
 Hardening release. Several helpers now match their documented contracts more strictly. `isTabFocused` / `tabFocusListener` remain as deprecated aliases.
