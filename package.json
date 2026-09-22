@@ -38,14 +38,12 @@
     "lint:fix": "rslint . --fix",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:pack": "node scripts/pack-smoke.mjs",
-    "prepare": "husky"
+    "test:pack": "node scripts/pack-smoke.mjs"
   },
   "devDependencies": {
     "@rslib/core": "^1.0.1",
     "@rslint/core": "^0.9.3",
     "happy-dom": "^20.14.5",
-    "husky": "^9.1.7",
     "oxfmt": "^0.70.0",
     "typedoc": "^0.28.20",
     "typescript": "^6.0.3",
