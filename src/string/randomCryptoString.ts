@@ -13,8 +13,8 @@ export const randomCryptoString = (length = 16, charset: string = DEFAULT_CHARSE
   crypto.getRandomValues(randomValues);
 
   let result = '';
-  for (let i = 0; i < length; i++) {
-    result += charset.charAt(randomValues[i] % charsetLength);
+  for (const value of randomValues) {
+    result += charset.charAt(value % charsetLength);
   }
 
   return result;

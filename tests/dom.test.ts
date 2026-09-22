@@ -208,9 +208,9 @@ describe('dom utilities', () => {
       appendBefore(before, ref);
       appendAfter(after, ref);
 
-      expect(parent.children[0].textContent).toBe('Before');
-      expect(parent.children[1].textContent).toBe('Middle');
-      expect(parent.children[2].textContent).toBe('After');
+      expect(parent.children[0]?.textContent).toBe('Before');
+      expect(parent.children[1]?.textContent).toBe('Middle');
+      expect(parent.children[2]?.textContent).toBe('After');
     });
   });
 
