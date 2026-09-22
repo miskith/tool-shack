@@ -32,7 +32,7 @@
   "sideEffects": false,
   "scripts": {
     "build": "rslib build",
-    "format": "pretty-quick",
+    "format": "oxfmt",
     "generate-docs": "node -e \"require('node:fs').rmSync('docs', { recursive: true, force: true })\" && typedoc --name \"Tool-Shack\" --readme README.md src/*/index.ts",
     "lint": "rslint .",
     "lint:fix": "rslint . --fix",
@@ -46,8 +46,7 @@
     "@rslint/core": "^0.9.3",
     "happy-dom": "^20.14.5",
     "husky": "^9.1.7",
-    "prettier": "^3.9.6",
-    "pretty-quick": "^4.2.2",
+    "oxfmt": "^0.70.0",
     "typedoc": "^0.28.20",
     "typescript": "^6.0.3",
     "vitest": "^5.0.1"

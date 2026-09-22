@@ -1,0 +1,12 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 100,
+  "singleQuote": true,
+  "useTabs": false,
+  "tabWidth": 2,
+  "semi": true,
+  "bracketSpacing": true,
+  "trailingComma": "all",
+  "sortPackageJson": false,
+  "ignorePatterns": ["package.json", "package-lock.json", "dist/*", "docs/*", "*.html", "*.test"]
+}
