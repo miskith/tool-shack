@@ -14,7 +14,7 @@ A lightweight, zero-dependency TypeScript utility library providing essential he
 - 📦 **Dual module support**: ESM (`import`) and CommonJS (`require`)
 - 🏷️ **Full TypeScript support** with built-in type definitions
 - 🌐 **Browser & DOM utilities** to streamline frontend development
-- ⚡ **Tree-shakeable** exports
+- ⚡ **Tree-shakeable** exports, including domain subpaths such as `tool-shack/string`
 
 ---
 
@@ -64,6 +64,16 @@ console.log(timeAgo(new Date(Date.now() - 5 * 60000))); // '5 minutes ago'
 // General Validation
 console.log(isValidJson('{"valid": true}')); // true
 ```
+
+Domain subpaths export the same helpers from one module:
+
+```typescript
+import { slugify } from 'tool-shack/string';
+import { createElement } from 'tool-shack/dom';
+import { retry } from 'tool-shack/schedule';
+```
+
+Available paths: `browser`, `dateTime`, `dom`, `general`, `schedule`, `storage`, `string`.
 
 ---
 

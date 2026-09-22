@@ -24,6 +24,41 @@
       "types": "./dist/esm/index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.cjs"
+    },
+    "./browser": {
+      "types": "./dist/esm/browser/index.d.ts",
+      "import": "./dist/esm/browser/index.js",
+      "require": "./dist/cjs/browser/index.cjs"
+    },
+    "./dateTime": {
+      "types": "./dist/esm/dateTime/index.d.ts",
+      "import": "./dist/esm/dateTime/index.js",
+      "require": "./dist/cjs/dateTime/index.cjs"
+    },
+    "./dom": {
+      "types": "./dist/esm/dom/index.d.ts",
+      "import": "./dist/esm/dom/index.js",
+      "require": "./dist/cjs/dom/index.cjs"
+    },
+    "./general": {
+      "types": "./dist/esm/general/index.d.ts",
+      "import": "./dist/esm/general/index.js",
+      "require": "./dist/cjs/general/index.cjs"
+    },
+    "./schedule": {
+      "types": "./dist/esm/schedule/index.d.ts",
+      "import": "./dist/esm/schedule/index.js",
+      "require": "./dist/cjs/schedule/index.cjs"
+    },
+    "./storage": {
+      "types": "./dist/esm/storage/index.d.ts",
+      "import": "./dist/esm/storage/index.js",
+      "require": "./dist/cjs/storage/index.cjs"
+    },
+    "./string": {
+      "types": "./dist/esm/string/index.d.ts",
+      "import": "./dist/esm/string/index.js",
+      "require": "./dist/cjs/string/index.cjs"
     }
   },
   "files": [

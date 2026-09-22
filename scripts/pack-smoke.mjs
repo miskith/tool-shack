@@ -59,17 +59,62 @@ if (clamp(5, 0, 3) !== 3) {
   );
   run('node', ['cjs-require.cjs'], consumerDir);
 
+  writeFileSync(
+    join(consumerDir, 'esm-subpath.mjs'),
+    `import { slugify } from 'tool-shack/string';
+import { retry } from 'tool-shack/schedule';
+
+if (slugify('Hello World!') !== 'hello-world') {
+  throw new Error('ESM subpath slugify returned ' + JSON.stringify(slugify('Hello World!')));
+}
+const retried = await retry(async () => 'ok', { retries: 0, delay: 0 });
+if (retried !== 'ok') {
+  throw new Error('ESM subpath retry returned ' + JSON.stringify(retried));
+}
+`,
+  );
+  run('node', ['esm-subpath.mjs'], consumerDir);
+
+  writeFileSync(
+    join(consumerDir, 'cjs-subpath.cjs'),
+    `const { slugify } = require('tool-shack/string');
+const { retry } = require('tool-shack/schedule');
+
+async function main() {
+  if (slugify('Hello World!') !== 'hello-world') {
+    throw new Error('CJS subpath slugify returned ' + JSON.stringify(slugify('Hello World!')));
+  }
+  const retried = await retry(async () => 'ok', { retries: 0, delay: 0 });
+  if (retried !== 'ok') {
+    throw new Error('CJS subpath retry returned ' + JSON.stringify(retried));
+  }
+}
+
+main().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
+`,
+  );
+  run('node', ['cjs-subpath.cjs'], consumerDir);
+
   if (!existsSync(tscBin)) {
     throw new Error('TypeScript binary not found; cannot check packed type resolution');
   }
   writeFileSync(
     join(consumerDir, 'check-types.ts'),
     `import { clamp, escapeHTML } from 'tool-shack';
+import { createElement } from 'tool-shack/dom';
+import { slugify } from 'tool-shack/string';
 
 const clamped: number = clamp(1, 0, 2);
 const escaped: string = escapeHTML('<');
+const element: HTMLDivElement = createElement('div');
+const slug: string = slugify('Hello World!');
 void clamped;
 void escaped;
+void element;
+void slug;
 `,
   );
   writeFileSync(
