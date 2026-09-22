@@ -52,16 +52,43 @@ describe('dom utilities', () => {
 
     it('infers native element types from tag names', () => {
       const expectType = <T>(_value: T): void => undefined;
+      const category = 'necessary';
+      const storedCategories: string[] = [];
+      const dynamicTag = 'input' as string;
 
       expectType<HTMLButtonElement>(createElement('button'));
       expectType<HTMLInputElement>(createElement('input'));
       expectType<HTMLDivElement>(createElement('div'));
       expectType<HTMLElement>(createElement('my-widget'));
+      expectType<HTMLInputElement>(
+        createElement('input', {
+          type: 'checkbox',
+          checked: !!(category === 'necessary' || storedCategories.includes(category)),
+          disabled: !!(category === 'necessary'),
+        }),
+      );
+      expectType<HTMLInputElement>(
+        createElement<HTMLInputElement>('input', {
+          type: 'checkbox',
+          checked: true,
+          disabled: true,
+        }),
+      );
+      expectType<HTMLInputElement>(
+        createElement<HTMLInputElement>(dynamicTag, {
+          type: 'checkbox',
+          checked: true,
+          disabled: false,
+        }),
+      );
+      expectType<HTMLElement>(createElement(dynamicTag, { className: 'consent' }));
 
       // @ts-expect-error -- a div is not a button
       expectType<HTMLButtonElement>(createElement('div'));
-      // @ts-expect-error -- tag inference cannot be overridden with an unrelated element type
-      createElement<HTMLButtonElement>('div');
+      // @ts-expect-error -- div has no input type property
+      createElement('div', { type: 'checkbox' });
+      // @ts-expect-error -- button type is submit, reset, or button
+      createElement('button', { type: 'checkbox' });
     });
 
     it('accepts aria-disabled and rejects the disables typo', () => {

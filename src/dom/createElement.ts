@@ -1,19 +1,34 @@
-import type { TCreateElementProps } from './types/createElement.js';
+import type {
+  TCreateElementNode,
+  TCreateElementProps,
+  TCreateElementPropsFor,
+} from './types/createElement.js';
 
 /**
- * Method for creating Node element and assigning multiple parameters, event listeners & children in one method call
+ * Method for creating Node element and assigning multiple parameters, event listeners & children in one method call.
+ * A known tag name selects that element's properties, so `input` accepts `type`, `checked`, and `disabled`.
+ * An explicit element type does the same for a string tag: `createElement<HTMLInputElement>(tag, props)`.
  *
  * @param tagName Node tag name
  * @param props List of attributes, event listeners or/and children to assign to the newly created element
  * @returns Created element; known HTML tags infer their specific element type
  */
-export const createElement: {
-  <K extends keyof HTMLElementTagNameMap>(
-    tagName: K,
-    props?: TCreateElementProps<HTMLElementTagNameMap[K]>,
-  ): HTMLElementTagNameMap[K];
-  (tagName: string, props?: TCreateElementProps<HTMLElement>): HTMLElement;
-} = (tagName: string, props?: TCreateElementProps<HTMLElement>): HTMLElement => {
+export function createElement<T extends HTMLElement | string>(
+  tagName: T extends HTMLElement ? string : T,
+  props?: TCreateElementPropsFor<T>,
+): TCreateElementNode<T>;
+
+/**
+ * Creates the element and assigns properties.
+ *
+ * @param tagName Node tag name
+ * @param props List of attributes, event listeners or/and children to assign to the newly created element
+ * @returns Created element
+ */
+export function createElement(
+  tagName: string,
+  props?: TCreateElementProps<HTMLElement>,
+): HTMLElement {
   const element = document.createElement(tagName);
 
   if (props) {
@@ -61,4 +76,4 @@ export const createElement: {
   }
 
   return element;
-};
+}
