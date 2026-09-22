@@ -1,19 +1,19 @@
 {
   "compilerOptions": {
     "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "verbatimModuleSyntax": true,
     "strict": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
-    "importHelpers": true,
     "rootDir": "./src",
     "lib": ["dom", "es2022"],
     "types": [],
-    "useDefineForClassFields": true
+    "useDefineForClassFields": true,
+    "noEmit": true
   },
   "include": ["src/**/*.ts"],
   "exclude": ["dist", "node_modules", "tests", "vitest.config.ts"]
