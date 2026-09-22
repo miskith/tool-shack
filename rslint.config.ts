@@ -1,25 +1,18 @@
-import js from '@eslint/js';
-import jsdoc from 'eslint-plugin-jsdoc';
-import tseslint from 'typescript-eslint';
+import { defineConfig, globalIgnores, js, ts } from '@rslint/core';
 
-export default tseslint.config(
+export default defineConfig([
+  globalIgnores(['dist/**', 'docs/**', 'node_modules/**', '*.config.js', '*.config.ts']),
   js.configs.recommended,
-  ...tseslint.configs.recommended,
+  ts.configs.recommended,
   {
     files: ['src/**/*.ts', 'tests/**/*.ts'],
-    plugins: {
-      jsdoc,
-    },
     languageOptions: {
       parserOptions: {
-        projectService: {
-          allowDefaultProject: ['tests/*.ts'],
-        },
-        tsconfigRootDir: import.meta.dirname,
+        project: './tsconfig.lint.json',
+        projectService: false,
       },
     },
     rules: {
-      // TypeScript-specific quality & consistency
       '@typescript-eslint/consistent-type-imports': [
         'error',
         {
@@ -57,8 +50,6 @@ export default tseslint.config(
         },
       ],
       '@typescript-eslint/prefer-optional-chain': 'error',
-
-      // Core JavaScript best practices & safety
       eqeqeq: ['error', 'always'],
       'no-var': 'error',
       'prefer-const': 'error',
@@ -73,26 +64,6 @@ export default tseslint.config(
       ],
       'object-shorthand': ['error', 'always'],
       'no-duplicate-imports': 'error',
-
-      // JSDoc documentation standards for exported utilities
-      'jsdoc/require-jsdoc': [
-        'error',
-        {
-          publicOnly: true,
-          require: {
-            FunctionDeclaration: true,
-            ArrowFunctionExpression: true,
-            FunctionExpression: true,
-            MethodDefinition: true,
-          },
-          contexts: [
-            'ExportNamedDeclaration > VariableDeclaration > VariableDeclarator > ArrowFunctionExpression',
-          ],
-        },
-      ],
-      'jsdoc/require-description': 'error',
-      'jsdoc/require-param-description': 'error',
-      'jsdoc/require-returns-description': 'error',
     },
   },
   {
@@ -101,7 +72,6 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-floating-promises': 'off',
-      'jsdoc/require-jsdoc': 'off',
     },
   },
   {
@@ -113,7 +83,4 @@ export default tseslint.config(
       },
     },
   },
-  {
-    ignores: ['dist/**', 'docs/**', 'node_modules/**', '*.config.js', '*.config.ts'],
-  },
-);
+]);

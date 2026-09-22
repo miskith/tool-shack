@@ -34,25 +34,22 @@
     "build": "rslib build",
     "format": "pretty-quick",
     "generate-docs": "node -e \"require('node:fs').rmSync('docs', { recursive: true, force: true })\" && typedoc --name \"Tool-Shack\" --readme README.md src/*/index.ts",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "rslint .",
+    "lint:fix": "rslint . --fix",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:pack": "node scripts/pack-smoke.mjs",
     "prepare": "husky"
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
     "@rslib/core": "^1.0.1",
-    "eslint": "^10.10.0",
-    "eslint-plugin-jsdoc": "^64.5.0",
+    "@rslint/core": "^0.9.3",
     "happy-dom": "^20.14.5",
     "husky": "^9.1.7",
     "prettier": "^3.9.6",
     "pretty-quick": "^4.2.2",
     "typedoc": "^0.28.20",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.70.0",
     "vitest": "^5.0.1"
   }
 }
