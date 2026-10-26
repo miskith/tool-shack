@@ -79,7 +79,7 @@
     "@rslib/core": "^1.0.1",
     "@rslint/core": "^0.9.3",
     "happy-dom": "^20.14.5",
-    "oxfmt": "^0.73.0",
+    "oxfmt": "^0.74.0",
     "typedoc": "^0.28.20",
     "typescript": "^7.0.2",
     "vitest": "^5.0.1"
